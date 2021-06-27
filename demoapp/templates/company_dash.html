@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+        <div class="jumbotron shadow">
+            <center>
+                <a class="btn btn-success" href="{% url 'demoapp:profile_view' %}">Profile</a>  
+                <a class="btn btn-warning" href="{% url 'demoapp:post_read_all' %}">Posts</a>
+                <a class="btn btn-primary" href="{% url 'demoapp:application_view' %}">Applications</a>
+            </center>
+        </div>        
+    {% endblock %}

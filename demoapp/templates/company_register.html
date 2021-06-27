@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+        <div class="container">
+            {% if registered %}
+                <div class="jumbotron">
+                    <h2><strong>SuccessFully Registered......!!</strong></h2>
+                    <h3>$ Thank You $</h3> <br>
+                    <center>
+                    <h4><i>Please, Login to Explore the Site **</i></h4>
+                    </center>
+                </div>
+            {% else %}
+                <h3><strong>Register Here !!</strong></h3> <hr> 
+                <h6><i>Already Registered ? </i><a href="{% url 'demoapp:login' %}">login</a></h6> 
+                <div class="card-header shadow"> 
+                    <form method="POST">
+                        {% csrf_token %}        
+                        {{ profile_form.as_p }}
+                        {{ user_form.as_p }}
+                        <input class="btn btn-success" type="submit" value="Register">
+                    </form>                    
+                </div>
+            {% endif %}
+        </div>
+    {% endblock %}

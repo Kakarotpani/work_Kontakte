@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <center>
+    <div class="panel-heading"><h3>Profile</h3> 
+        <div class="panel-body">
+            company : {{company.cname}} <br>
+            company type : {{company.ctype}} <br>
+            established : {{company.estd}} <br>
+            ceo : {{company.ceo}} <br>
+            email : {{company.user.email}} <br>
+            phone : {{company.phone}} <br>
+            Location : {{company.clocation}} <br>
+            verified : {{company.is_verified}} <br> <br>
+            <a class="btn btn-info" href="{% url 'demoapp:profile_update' %}">update</a> <br> <br>
+            <a class="btn btn-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+        </div>
+    </div>
+  </center>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<center>
+    <div class="shadow">
+        <h3>Profile</h3> 
+        <div class="jumbotron-fluid">    
+            {% if seeker.photo %}
+            <div class="position-static">
+                <img class = "rounded-circle" src="{{ seeker.photo.url }}" alt="upload" height="120" width="120"><br>
+            </div>    
+            {% endif %}
+            <b> {{seeker.name}} </b><br> 
+            <b> sex : </b> {{seeker.sex}} <br> 
+            <b> age : </b> {{seeker.age}} <br>
+            <b> dob : </b> {{seeker.dob}} <br>
+            <b> nationality : </b> {{seeker.nationality}} <br>
+            <b> qualification : </b> {{seeker.qualification}} <br>
+            <b> experience : </b> {{seeker.experience}} <br>
+            <b> email : </b> {{seeker.user.email}} <br>
+            <b> phone : </b> {{seeker.phone}} <br>
+            <b> address : </b> {{seeker.address}} <br>
+            <b> issued id : </b> {{seeker.issued_id}} <br>                    
+            <b> verified : </b> {{seeker.is_verified}} <br> <br>
+            <a class="btn btn-info" href="{% url 'demoapp:profile_update' %}">update</a> <br> <br>
+            <a class="btn btn-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+        </div>
+    </div>
+</center>
+{% endblock %}

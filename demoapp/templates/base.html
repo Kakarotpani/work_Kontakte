@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>work - kontakte</title>
+</head>
+<body>  
+    <nav class="navbar navbar-expand-lg bg-light sticky-top">
+        <div class="container">            
+            <a class="navbar-brand text-dark" href="{% url 'demoapp:base' %}"> 
+                <img class="rounded text-center" src="https://www.freepnglogos.com/uploads/apple-logo-png/apple-logo-png-dallas-shootings-don-add-are-speech-zones-used-4.png" height="40" width="40" alt="logo">
+            </a>
+            <a class="navbar-brand text-dark" href="{% url 'demoapp:comapany_register' %}">Register/Company</a>
+            <a class="navbar-brand text-dark" href="{% url 'demoapp:seeker_register' %}">Register/Seeker</a>    
+            {% if user.is_authenticated %}                 
+                {% if user.is_company %}
+                    <a class="navbar-brand text-dark" href="{% url 'demoapp:company_dash' %}">DashBoard</a>                        
+                {% elif user.is_seeker %}     
+                    <a class="navbar-brand text-dark" href="{% url 'demoapp:seeker_dash' %}">DashBoard</a>                    
+                {% endif %}  
+                <a class="navbar-brand text-dark" href="{% url 'demoapp:logout' %}">Logout</a>                               
+            {% else %}
+                <a class="navbar-brand text-dark" href="{% url 'demoapp:login' %}">Login</a>                 
+            {% endif %}
+            <form action="{% url 'demoapp:search' %}" method="GET">
+                <img src="https://cdn2.iconfinder.com/data/icons/apple-inspire-white/100/Apple-30-512.png" height="24" width="24">
+                <input class="text" type="text" name="job_request" placeholder="search">
+                <input class="btn btn-dark btn-sm" type="submit" value="Search">
+            </form>    
+        </div>
+    </nav>
+
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }} m-2" id="msg" roles="alert" >
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <div class="container jumbotron">        
+        {% block content %}
+                <center>        
+                    <h3><b>Latest  Posts</b></h3>  <hr>                    
+                        <table class="shadow-lg " border="1">
+                            <tr class="table-active">
+                                <th>company</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Published Date</th>
+                                <th>vaccant post</th>
+                                <th>no. of Vaccancy</th>    
+                                <th>Location</th>  
+                                {% if user.is_authenticated %}     
+                                    {% if user.is_seeker %}
+                                        <th>Apply</th>
+                                    {% endif %}   
+                                {% endif %}                                    
+                            </tr>
+                                {% for data in posts %}  
+                            <tr>
+                                <td>{{ data.company.cname }}</td>
+                                <td>{{ data.title }}</td>
+                                <td>{{ data.description }}</td> 
+                                <td>{{ data.published_date }}</td>
+                                <td>{{ data.vaccant_for }}</td>
+                                <td class="text-center">{{ data.no_of_vaccancy }}</td>  
+                                <td>{{ data.company.clocation }}</td>
+                                {% if user.is_authenticated %}     
+                                    {% if user.is_seeker %}
+                                        <td><a class="btn btn-outline-dark btn-sm" href="{% url 'demoapp:application_create' post_id=data.id company_id=data.company.id %}">Apply</a></td>
+                                    {% endif %}   
+                                {% endif %}                                                      
+                            </tr>
+                                {% endfor %}
+                        </table>
+                </center>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'demoapp:all_posts' %}">more</a>
+                {% else %}
+                    <a href="{% url 'demoapp:login' %}">more</a>
+                {% endif %}
+        {% endblock %}
+    </div>
+</body>
+</html> 

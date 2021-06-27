@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+        <div class="container">
+            <h2><b>Search Results :</b></h2>
+            <h5>({{ post_request.count }} results found.)</h5> <br>
+            {% if post_count < 1 %}
+                <h3>Company hasn't posted yet</h3>
+                    <h4><a>{{ post_request.cname }}</a></h4>                
+            {% else %}
+                
+                <table class="shadow" border="2">
+                    <tr class="table-active">
+                        <th>company</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Published Date</th>
+                        <th>vaccant post</th>
+                        <th class="text-center">no. of Vaccancy</th>
+                        <th>location</th> 
+                        {% if user.is_authenticated %}     
+                            {% if user.is_seeker %}
+                                <th>Apply</th>
+                            {% endif %}   
+                        {% endif %} 
+                                                                         
+                    </tr>
+                        {% for data in post_request %}  
+                    <tr>
+                        <td>{{ data.company.cname }}</td>
+                        <td>{{ data.title }}</td>
+                        <td>{{ data.description }}</td>
+                        <td>{{ data.published_date }}</td>
+                        <td>{{ data.vaccant_for }}</td>
+                        <td>{{ data.no_of_vaccancy }}</td>  
+                        <td>{{ data.company.clocation }}</td> 
+                        {% if user.is_authenticated %}     
+                            {% if user.is_seeker %}
+                            <td><a class="btn btn-outline-dark btn-sm" href="{% url 'demoapp:application_create' post_id=data.id company_id=data.company.id %}">Apply</a></td>
+                            {% endif %}   
+                        {% endif %}                                                     
+                    </tr>
+                        {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+    {% endblock %}

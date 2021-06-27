@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+        <div>                                    
+            <center>                        
+                <h2>{{ company.cname }}'s posts :</h2> <br>  
+                {% if  post.count > 0%}         
+                    <table border="2">
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Published Date</th>
+                            <th>vaccant post</th>
+                            <th>no. of Vaccancy</th>
+                            <th>Location</th>
+                            <th>update_Post</th>   
+                            <th>Delete_Post</th>                       
+                        </tr>
+                        {% for data in post %}  
+                            <tr>
+                                <td>{{ data.title }}</td>
+                                <td>{{ data.description }}</td>
+                                <td>{{ data.published_date|date:"D M Y" }}</td>
+                                <td>{{ data.vaccant_for }}</td>
+                                <td class="text-center">{{ data.no_of_vaccancy }}</td>
+                                <td>{{ data.company.clocation }}</td>
+                                <td class="text-center"><a class="btn btn-info btn-sm" href="{% url  'demoapp:post_update' data.id %}">edit</a></td>  
+                                <td class="text-center"><a class="btn btn-danger btn-sm" href="{% url 'demoapp:post_delete' data.id %}">delete</a></td>                          
+                            </tr>
+                        {% endfor %}
+                    </table>  <br> 
+                {% else %}     
+                    <h4>No Posts yet</h4>
+                {% endif %}                                
+                <h5><a class="btn btn-primary" href="{% url 'demoapp:post_create' %}">Add Post</a></h5>
+            </center>            
+        </div>
+{% endblock %}

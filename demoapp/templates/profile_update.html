@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+        <div class="container">
+            <center>
+            <h2><strong>Update your profile here !!</strong></h2>
+            </center>
+            {% if a_company %}
+                <div class="jumbotron">                        
+                    <center>                
+                        <form method="POST">
+                            {% csrf_token %}
+                            {{ company_profile.as_p }}
+                            <input class="btn btn-success" type="submit" value="update">
+                        </form>
+                    </center>
+                </div>
+            {% elif a_seeker %}
+                <div class="jumbotron">                        
+                    <center>                
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ seeker_profile.as_p }}
+                            <input class="btn btn-success" type=    "submit" value="update">
+                        </form>
+                    </center>
+                </div>                
+            {% endif %}
+        </div>
+    {% endblock %}

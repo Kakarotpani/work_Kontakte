@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">    
+        {% if new_post %}  
+            <center><h2><b>- Create a New Post -</b></h2></center>   
+        {% elif update_post %}
+            <center><h2><b>- Update your Post -</b></h2></center>  
+        {% endif %}         
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input class="btn btn-success" type="submit" value="POST">
+        </form>
+    </div>
+{% endblock %}

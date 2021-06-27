@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+        <div>            
+            <center>  
+                <h3>{{ seeker.name }}'s CVs</h3>  <br>
+                {% if cv.count > 0 %}                            
+                    <table border="2">
+                        <tr>
+                            <th>Resume</th>     
+                            <th>update_Resume</th>   
+                            <th>Delete_Resume</th>
+                        </tr>
+                        {% for data in cv %}  
+                        {% if data.cv %}
+                            <tr>
+                                <td><img class="img-thumbnail" src="{{ data.cv.url }}" height="200" width="180"></td>                       
+                                <td class="text-center" ><a class="btn btn-info btn-sm center" href="{% url 'demoapp:cv_update' data.id %}">edit</a></td>  
+                                <td class="text-center"><a class="btn btn-danger btn-sm" href="{% url 'demoapp:cv_delete' data.id %}">delete</a></td>                          
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </table>  <br>
+                {% else %} 
+                    <h4><i>No Cv yet</i></h4>
+                {% endif %}  
+                <h5><a class="btn btn-primary" href="{% url 'demoapp:cv_create' %}">Add CV</a></h5> <hr>                    
+            </center>   
+        </div>
+        <center>
+            <footer>
+                <p>
+                    <b>note :</b> please maintain only 1 CV in your profile for convinience . <br>
+                    This site automatically upload the <i><b>latest Cv</b></i> while applying for any post.
+                </p>
+            </footer>
+        </center>
+{% endblock %} 

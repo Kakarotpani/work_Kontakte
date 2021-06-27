@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+    <center>
+        <h3><b>- Applications -</b></h3> <hr>
+
+        {% if a_seeker %}
+
+            {% if apps.count < 1 %}
+                <h3>( No Applications yet !! )</h3> 
+            {% else %}
+                <table class="shadow" border="1">
+                    <tr class="table-active">
+                        <th class="text-center">company</th>
+                        <th class="text-center">post</th>
+                        <th class="text-center">cv Applied</th>
+                        <th class="text-center">apply date</th>                
+                        <th class="text-center">status</th>
+                        <th class="text-center">cancel</th>                  
+                    </tr>                
+                    {% for app in apps %}
+                        <tr>
+                            <td>{{ app.company }}</td>
+                            <td>{{ app.post }}</td>
+                            <td><img class="img-thumbnail" src="{{ app.cv_applied.cv.url }}" height="200" width="180"></td>
+                            <td>{{ app.apply_date }}</td>                            
+                            {% if app.status  %}                        
+                                <td class="text-center"><span class="badge badge-success badge">Accepted</span></td>
+                            {% else %}
+                                <td class="text-center"><span class="badge badge-secondary badge">Pending..</span></td>
+                            {% endif %}
+                            <td><a class="btn btn-danger btn-sm" href="{% url 'demoapp:application_delete' app.id %}">cancel</a></td>
+                        </tr>
+                    {% endfor %}
+                    
+                </table> <hr>
+                                
+            {% endif %}
+            <a class="btn btn-info" href="{% url 'demoapp:base' %}">Apply Now</a> 
+
+        {% elif a_company %}
+        
+            {% if apps.count < 1 %}
+                <h3>No Applications yet !!</h3>
+            {% else %}
+                <table class="shadow" border="1">
+                    <tr class="table-active">
+                        <th>post id</th>
+                        <th class="text-center">post</th>
+                        <th class="text-center">Applicant</th>                        
+                        <th class="text-center">cv Applied</th>
+                        <th class="text-center">apply date</th>                
+                        <th class="text-center">status</th>                   
+                    </tr>                
+                    {% for app in apps %}
+                        <tr>
+                            <td class="text-center">{{ app.post.id }}</td>
+                            <td>{{ app.post }}</td>
+                            <td class="text-center">{{ app.seeker }}</td>
+                            <td><img class="img-thumbnail" src="{{ app.cv_applied.cv.url }}" height="200" width="180"></td>
+                            <td>{{ app.apply_date }}</td>    
+                            {% if app.status  %}                                               
+                                <td><a class="btn btn-danger btn-sm" href="{% url 'demoapp:cancel_application' app.id %}">cancel application</a></td>
+                            {% else %}
+                                <td><a class="btn btn-success btn-sm" href="{% url 'demoapp:accept_application' app.id %}">Accept application</a></td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>                    
+            {% endif %}
+        {% endif %}            
+    </center>    
+  </div>
+{% endblock %}
