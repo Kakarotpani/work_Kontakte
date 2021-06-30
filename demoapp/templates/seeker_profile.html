@@ -2,30 +2,48 @@
 {% load static %}
 
 {% block content %}
-<center>
     <div class="shadow">
-        <h3>Profile</h3> 
-        <div class="jumbotron-fluid">    
-            {% if seeker.photo %}
-            <div class="position-static">
-                <img class = "rounded-circle" src="{{ seeker.photo.url }}" alt="upload" height="120" width="120"><br>
-            </div>    
-            {% endif %}
-            <b> {{seeker.name}} </b><br> 
-            <b> sex : </b> {{seeker.sex}} <br> 
-            <b> age : </b> {{seeker.age}} <br>
-            <b> dob : </b> {{seeker.dob}} <br>
-            <b> nationality : </b> {{seeker.nationality}} <br>
-            <b> qualification : </b> {{seeker.qualification}} <br>
-            <b> experience : </b> {{seeker.experience}} <br>
-            <b> email : </b> {{seeker.user.email}} <br>
-            <b> phone : </b> {{seeker.phone}} <br>
-            <b> address : </b> {{seeker.address}} <br>
-            <b> issued id : </b> {{seeker.issued_id}} <br>                    
-            <b> verified : </b> {{seeker.is_verified}} <br> <br>
-            <a class="btn btn-info" href="{% url 'demoapp:profile_update' %}">update</a> <br> <br>
-            <a class="btn btn-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+        <div class="card" style="max-width: 600px;">  
+            <style>
+                .card {
+                    background-image: linear-gradient(to left, rgba(161, 216, 110, 0), rgb(77, 212, 95));
+                }
+            </style>                        
+            <div class="row no-gutters">                                             
+                <div class="col-sm-4">         
+                    {% if seeker.photo %}                   
+                    <div class="shadow h-100 w-100">
+                        <img class = "rounded-circle m-0 border-right-0 card-img-top" src="{{ seeker.photo.url }}" alt="upload" height="200" width="240"><br>
+                    </div>
+                    {% else %}
+                        <img src="https://unoreads.com/user_profile_pic/demo-user.png" class="img m-2 p-2" height="200"  width="240">
+                    {% endif %}                    
+                </div>
+
+                <div class="col-sm-7">
+                    <div class="card-body"> 
+                        <h5 class="card-title">{{seeker.name}}</h5> <hr>
+                        <b>sex :</b><span class="card-body">{{seeker.sex}}</span> <br>
+                        <b>age :</b><span class="card-body">{{seeker.age}}</span> <br>
+                        <b>nationality :</b><span class="card-body">{{seeker.nationality}}</span> <br>
+                        <b>qualification :</b><span class="card-body">{{seeker.qualification}}</span> <br>
+                        <b>experience :</b><span class="card-body">{{seeker.experience}}</span> <br>
+                        <b>address :</b><span class="card-body">{{seeker.address}}</span> <br>
+                        <b>issued_id :</b><span class="card-body">{{seeker.issued_id}}</span> <br>
+                        <b>phone :</b><span class="card-body">{{seeker.phone}}</span> <br>
+                        <b>email :</b><span class="card-body">{{seeker.user.email}}</span> <br>
+                        <b>Verified :</b>
+                        {% if seeker.is_verified %}<span class="card-body"><i>Yes</i></span>
+                        {% else %}<span class="card-body"><i>Not Yet</i></span>
+                        {% endif %}
+                            <div class="m-2 p-0">
+                              <a class="btn btn-info" href="{% url 'demoapp:profile_update' %}">update</a>
+                              <a class="btn btn-outline-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</center>
+    </div>  
 {% endblock %}

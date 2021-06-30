@@ -58,7 +58,7 @@
                         <tr>
                             <td class="text-center">{{ app.post.id }}</td>
                             <td>{{ app.post }}</td>
-                            <td class="text-center">{{ app.seeker }}</td>
+                            <td class="text-center"><a class="text-info" href="{% url 'demoapp:seeker_detail' app.seeker.id %}">{{ app.seeker.name }}</a></td>
                             <td><img class="img-thumbnail" src="{{ app.cv_applied.cv.url }}" height="200" width="180"></td>
                             <td>{{ app.apply_date }}</td>    
                             {% if app.status  %}                                               

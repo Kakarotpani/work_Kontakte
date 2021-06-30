@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 
     {% block content %}
@@ -12,16 +13,16 @@
                     </center>
                 </div>
             {% else %}
-                <h3><strong>Register Here !!</strong></h3> <hr> 
-                <h6><i>Already Registered ? </i><a href="{% url 'demoapp:login' %}">login</a></h6> 
-                <div class="card-header shadow"> 
-                    <form method="POST">
-                        {% csrf_token %}        
-                        {{ profile_form.as_p }}
-                        {{ user_form.as_p }}
-                        <input class="btn btn-success" type="submit" value="Register">
-                    </form>                    
-                </div>
+                    <h3><strong>Register Here !!</strong></h3> <hr>
+                    <h6><i>Already Registered ? </i><a href="{% url 'demoapp:login' %}">login</a></h6> 
+                    <div class="card-header shadow">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ profile_form|crispy }}
+                            {{ user_form|crispy }} 
+                            <input class="btn btn-success" type="submit" value="Register">
+                        </form>
+                    </div>
             {% endif %}
         </div>
     {% endblock %}

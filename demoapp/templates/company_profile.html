@@ -2,20 +2,47 @@
 {% load static %}
 
 {% block content %}
-  <center>
-    <div class="panel-heading"><h3>Profile</h3> 
-        <div class="panel-body">
-            company : {{company.cname}} <br>
-            company type : {{company.ctype}} <br>
-            established : {{company.estd}} <br>
-            ceo : {{company.ceo}} <br>
-            email : {{company.user.email}} <br>
-            phone : {{company.phone}} <br>
-            Location : {{company.clocation}} <br>
-            verified : {{company.is_verified}} <br> <br>
-            <a class="btn btn-info" href="{% url 'demoapp:profile_update' %}">update</a> <br> <br>
-            <a class="btn btn-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+    <div class="shadow">
+        <div class="card" style="max-width: 600px;">  
+            <style>
+                .card {
+                    background-image: linear-gradient(to left, rgba(161, 216, 110, 0), rgb(228, 25, 25));
+                }
+            </style>                        
+            <div class="row no-gutters">                                             
+                <div class="col-sm-4">         
+                    {% if company.logo %}
+                        <div class="shadow h-100 w-100">
+                            <img class = "rounded-circle m-0 border-right-0 card-img-top" src="{{ company.logo.url }}" height="200" width="240"><br>
+                        </div>
+                    {% else %}
+                        <img src="https://img.favpng.com/22/7/5/work-life-balance-project-brand-logo-png-favpng-y7QaFcq9APCtFqXBHez05pQS8.jpg" class="rounded-circle img m-2 p-2" height="200"  width="240">
+                    {% endif %}                   
+                </div>
+
+                <div class="col-sm-7">
+                    <div class="card-body"> 
+                        <h5 class="card-title"><b>{{company.cname}}</b></h5> <hr>     
+                        <b>Type : </b><span class="card-body">{{company.ctype}}</span> <br>
+                        <b>CEO : </b><span class="card-body">{{company.ceo}}</span> <br>
+                        <b>Location : </b><span class="card-body">{{company.clocation}}</span> <br>
+                        <b>Established : </b><span class="card-body">{{company.estd}}</span> <br>
+                        <b>email : </b><span class="card-body">{{company.user.email}}</span> <br>
+                        <b>Verified : </b>
+                        {% if company.is_verified %}<span class="card-body"><i>Yes</i></span>
+                        {% else %}<span class="card-body"><i>Not Yet</i></span>
+                        {% endif %} <br>
+                        {% if not detail %}
+                        <b>phone : </b><span class="card-body">{{company.phone}}</span> <br>
+                            <div class="m-2 p-0">
+                              <a class="btn btn-info" href="{% url 'demoapp:profile_update' %}">update</a>
+                              <a class="btn btn-outline-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-  </center>
+    </div>  
 {% endblock %}

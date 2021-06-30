@@ -31,7 +31,7 @@ class User_Form(forms.ModelForm):
 class Company_Form(forms.ModelForm):
     class Meta:
         model = Company
-        fields = ("cname", "ctype", "estd", "ceo", "phone", "clocation")
+        fields = ("cname", "ctype", "estd", "ceo", "phone", "clocation", "logo")
         labels = {"cname": "Company Name", "ctype" : "Company Type", "estd": "Estd.", "ceo": "CEO", "phone" : "contact no.", "clocation": "Company Address"}
         
 

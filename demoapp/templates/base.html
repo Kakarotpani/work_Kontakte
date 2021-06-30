@@ -4,8 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css" />  	
+  	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,500&amp;subset=latin-ext" rel="stylesheet">
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <title>work - kontakte</title>
 </head>
 <body>  
@@ -14,7 +18,7 @@
             <a class="navbar-brand text-dark" href="{% url 'demoapp:base' %}"> 
                 <img class="rounded text-center" src="https://www.freepnglogos.com/uploads/apple-logo-png/apple-logo-png-dallas-shootings-don-add-are-speech-zones-used-4.png" height="40" width="40" alt="logo">
             </a>
-            <a class="navbar-brand text-dark" href="{% url 'demoapp:comapany_register' %}">Register/Company</a>
+            <a class="navbar-brand text-dark" href="{% url 'demoapp:company_register' %}">Register/Company</a>
             <a class="navbar-brand text-dark" href="{% url 'demoapp:seeker_register' %}">Register/Seeker</a>    
             {% if user.is_authenticated %}                 
                 {% if user.is_company %}
@@ -30,7 +34,7 @@
                 <img src="https://cdn2.iconfinder.com/data/icons/apple-inspire-white/100/Apple-30-512.png" height="24" width="24">
                 <input class="text" type="text" name="job_request" placeholder="search">
                 <input class="btn btn-dark btn-sm" type="submit" value="Search">
-            </form>    
+            </form>                                 
         </div>
     </nav>
 
@@ -64,13 +68,13 @@
                             </tr>
                                 {% for data in posts %}  
                             <tr>
-                                <td>{{ data.company.cname }}</td>
+                                <td><a class="text-info" href="{% url 'demoapp:company_detail' data.company.id %}">{{ data.company.cname }}</a></td>
                                 <td>{{ data.title }}</td>
                                 <td>{{ data.description }}</td> 
-                                <td>{{ data.published_date }}</td>
+                                <td>{{ data.published_date|date:"F d Y" }}</td>
                                 <td>{{ data.vaccant_for }}</td>
                                 <td class="text-center">{{ data.no_of_vaccancy }}</td>  
-                                <td>{{ data.company.clocation }}</td>
+                                <td>{{  data.company.clocation }}</td>
                                 {% if user.is_authenticated %}     
                                     {% if user.is_seeker %}
                                         <td><a class="btn btn-outline-dark btn-sm" href="{% url 'demoapp:application_create' post_id=data.id company_id=data.company.id %}">Apply</a></td>
