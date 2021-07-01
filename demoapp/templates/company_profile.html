@@ -2,13 +2,16 @@
 {% load static %}
 
 {% block content %}
-    <div class="shadow">
-        <div class="card" style="max-width: 600px;">  
+    <center>
+        <div class="card shadow" style="max-width: 600px;">  
             <style>
                 .card {
                     background-image: linear-gradient(to left, rgba(161, 216, 110, 0), rgb(228, 25, 25));
                 }
-            </style>                        
+                .btn-danger {
+                    background-image: linear-gradient(to left, rgba(241, 227, 227, 0), rgb(240, 121, 121));
+                }
+            </style>                       
             <div class="row no-gutters">                                             
                 <div class="col-sm-4">         
                     {% if company.logo %}
@@ -31,18 +34,22 @@
                         <b>Verified : </b>
                         {% if company.is_verified %}<span class="card-body"><i>Yes</i></span>
                         {% else %}<span class="card-body"><i>Not Yet</i></span>
-                        {% endif %} <br>
+                        {% endif %} <br>                    
                         {% if not detail %}
                         <b>phone : </b><span class="card-body">{{company.phone}}</span> <br>
                             <div class="m-2 p-0">
-                              <a class="btn btn-info" href="{% url 'demoapp:profile_update' %}">update</a>
-                              <a class="btn btn-outline-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+                                <a class="btn btn-danger" href="{% url 'demoapp:profile_update' %}">update</a>
+                                <a class="btn btn-outline-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
                             </div>
+                        {% else %}
+                            <center>
+                                <a class="btn btn-sm btn-success" href="{% url 'demoapp:post_detail' company.id %}">view Posts</a>
+                            </center>
                         {% endif %}
-                        </div>
+                                            
                     </div>
                 </div>
             </div>
         </div>
-    </div>  
+    </center>
 {% endblock %}

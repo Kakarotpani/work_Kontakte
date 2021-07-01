@@ -1,58 +1,27 @@
 {% extends 'base.html' %}
 {% load static %}
 
-    {% block content %}
-        <div class="container">    
-            {% if no_post %}      
-                <h2><b>Search Results :</b></h2>
-                <h5>({{ company.count }} results found.)</h5> <br>   
-                <h3>Company hasn't posted yet</h3>
+{% block content %}
+    <style>
+        .badge-info {
+            background-image: linear-gradient(to left, rgba(161, 216, 110, 0), rgb(65, 236, 208));
+        }
+        .badge {
+            height: 20px;
+        }
+    </style>
 
-                <ul>
-                    {% for comp in company %}       
-                        <li>
-                            <a class="badge badge-info" href="{% url 'demoapp:company_detail' comp.id %}"><h5>{{ comp.cname }}</h5></a> <br> <br>
-                        </li>         
-                    {% endfor %}
-                </ul>
-            {% else %}   
+    <h2><b><u>Search  Results </u>  : </b></h2>
+        {% if result_count == 1 %}
+            <h6>({{ result_count }} <i>matching result found .</i>)</h6> <br>  
+        {% else %}
+            <h6>({{ result_count }} <i>matching results found .</i>)</h6> <br>   
+        {% endif %}
 
-            <h2><b>Search Results :</b></h2>
-            <h5>({{ post_request.count }} results found.)</h5> <br> 
-
-                <table class="shadow" border="2">
-                    <tr class="table-active">
-                        <th>company</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Published Date</th>
-                        <th>vaccant post</th>
-                        <th class="text-center">no. of Vaccancy</th>
-                        <th>location</th> 
-                        {% if user.is_authenticated %}     
-                            {% if user.is_seeker %}
-                                <th>Apply</th>
-                            {% endif %}   
-                        {% endif %} 
-                                                                         
-                    </tr>
-                        {% for data in post_request %}  
-                    <tr>
-                        <td><a class="text-info" href="{% url 'demoapp:company_detail' data.company.id %}">{{ data.company.cname }}</a></td>
-                        <td>{{ data.title }}</td>
-                        <td>{{ data.description }}</td>
-                        <td>{{ data.published_date|date:"F d Y" }}</td>
-                        <td>{{ data.vaccant_for }}</td>
-                        <td class="text-center">{{ data.no_of_vaccancy }}</td>  
-                        <td>{{ data.company.clocation }}</td> 
-                        {% if user.is_authenticated %}     
-                            {% if user.is_seeker %}
-                            <td><a class="btn btn-outline-dark btn-sm" href="{% url 'demoapp:application_create' post_id=data.id company_id=data.company.id %}">Apply</a></td>
-                            {% endif %}   
-                        {% endif %}                                                     
-                    </tr>
-                        {% endfor %}
-                </table>
-            {% endif %}
-        </div>
-    {% endblock %}
+    {% for data in result %}
+        <ul>
+            <li><a class="badge badge-pill badge-info" href="{% url 'demoapp:company_detail' data.id %}">{{ data }}</a></li>           
+        </ul>
+    {% endfor %}
+    
+{% endblock %}

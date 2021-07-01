@@ -25,6 +25,7 @@ urlpatterns = [
     path('search', views.search, name="search"),
     path('company/detail/<int:c_id>', views.company_detail, name = 'company_detail'),
     path('seeker/detail/<int:s_id>', views.seeker_detail, name = 'seeker_detail'),
+    path('post/detail/<int:id>', views.post_detail, name = 'post_detail'),
     path('posts/all', views.all_posts, name="all_posts"),
     path('application/view', views.application_view, name= "application_view"),
     path('application/create/<int:post_id>/<int:company_id>', views.application_create, name = "application_create"),

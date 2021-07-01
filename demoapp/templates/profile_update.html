@@ -1,31 +1,24 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 
     {% block content %}
-        <div class="container">
-            <center>
-            <h2><strong>Update your profile here !!</strong></h2>
+        <div class="container-fluid shadow"> <br>
+            <center> 
+            <h2><strong><u>Update your profile here !!</u></strong></h2> 
             </center>
-            {% if a_company %}
-                <div class="jumbotron">                        
-                    <center>                
-                        <form method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ company_profile.as_p }}
-                            <input class="btn btn-success" type="submit" value="update">
-                        </form>
-                    </center>
-                </div>
-            {% elif a_seeker %}
-                <div class="jumbotron">                        
-                    <center>                
-                        <form method="POST" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            {{ seeker_profile.as_p }}
-                            <input class="btn btn-success" type=    "submit" value="update">
-                        </form>
-                    </center>
-                </div>                
+            {% if a_company %} 
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ company_profile|crispy }}
+                    <input class="btn btn-success" type="submit" value="update"> <br> 
+                </form>
+            {% elif a_seeker %}  
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ seeker_profile|crispy }}
+                    <input class="btn btn-success" type=    "submit" value="update"> <br>
+                </form>
             {% endif %}
         </div>
     {% endblock %}

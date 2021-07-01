@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h4>All  Posts  : </h4>       
+    <a class="btn btn-sm btn-primary text-center" href="{% url 'demoapp:company_detail' company.id %}"> <h5><b>{{ company.cname }}</b> Profile</h5> </a> <hr>
+    <center>             
+            <table class="shadow-lg " border="1">
+                <tr class="table-active">
+                    <th>company</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Published Date</th>
+                    <th>vaccant post</th>
+                    <th>no. of Vaccancy</th>    
+                    <th>Location</th>  
+                    {% if user.is_authenticated %}     
+                        {% if user.is_seeker %}
+                            <th>Apply</th>
+                        {% endif %}   
+                    {% endif %}                                    
+                </tr>
+                    {% for data in posts %}  
+                <tr>
+                    <td><a class="text-info" href="{% url 'demoapp:company_detail' data.company.id %}">{{ data.company.cname }}</a></td>
+                    <td>{{ data.title }}</td>
+                    <td>{{ data.description }}</td> 
+                    <td>{{ data.published_date|date:"F d Y" }}</td>
+                    <td>{{ data.vaccant_for }}</td>
+                    <td class="text-center">{{ data.no_of_vaccancy }}</td>  
+                    <td>{{  data.company.clocation }}</td>
+                    {% if user.is_authenticated %}     
+                        {% if user.is_seeker %}
+                            <td><a class="btn btn-outline-dark btn-sm" href="{% url 'demoapp:application_create' post_id=data.id company_id=data.company.id %}">Apply</a></td>
+                        {% endif %}   
+                    {% endif %}                                                      
+                </tr>
+                    {% endfor %}
+            </table>
+    </center>
+                
+        {% endblock %}

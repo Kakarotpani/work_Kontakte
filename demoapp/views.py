@@ -12,6 +12,7 @@ from demosite import settings
 from django.contrib import messages
 from django.db.models import Q
 from itertools import chain
+from operator import attrgetter
 
 
 # Create your views here.
@@ -357,7 +358,7 @@ def cv_delete(request, id):
         return HttpResponseRedirect('/cv/read/all')
 
 
-def search(request):
+""" def search(request):
     if request.method == 'GET':
         job_request = request.GET['job_request']
         if len(job_request) > 30:
@@ -389,7 +390,33 @@ def search(request):
                         return render(request, 'search.html', context = context)
             else:
                 messages.info(request,"* No Matching Results Found !!")
-                return HttpResponseRedirect('/')
+                return HttpResponseRedirect('/') """
+
+
+def search(request):
+    if request.method == 'GET':
+        search_request = request.GET['job_request']
+
+        post = Post.objects.filter(Q(vaccant_for__icontains = search_request))
+        company = Company.objects.filter(Q(cname__icontains = search_request) | 
+            Q(ctype__icontains = search_request) | 
+            Q(clocation__icontains = search_request) |
+            Q(ceo__icontains = search_request))
+
+        result = list(chain(post, company)) 
+            
+        if len(result) == 0:
+            messages.info(request, "* No matching results Found !!")
+            return HttpResponseRedirect('/')
+        else:
+            context ={
+                'post': post,
+                'company': company,
+                'result': result,
+                'result_count' : len(result),                
+            }
+            return render(request, 'search.html', context= context)
+        
 
 
 #  Application
@@ -419,8 +446,11 @@ def application_create(request, post_id, company_id):
             seeker = Seeker.objects.get(user = request.user)
             post = Post.objects.get(id = post_id)
             company = Company.objects.get(id = company_id)
-            cv_applied = CV.objects.filter(seeker = seeker).latest('upload_date') or None
-            if Application.objects.filter(seeker = seeker, post = post).exists():            
+            try:
+                cv_applied = CV.objects.filter(seeker = seeker).latest('upload_date')
+            except:
+                cv_applied = None
+            if Application.objects.filter(seeker = seeker, post = post).exists():               
                 messages.error(request, "You have already applied for the post !!")
                 return HttpResponseRedirect('/application/view')    
             else:
@@ -483,3 +513,10 @@ def seeker_detail(request, s_id):
         seeker = Seeker.objects.get(id = s_id)
         detail = True
         return  render(request, 'seeker_profile.html', {'seeker': seeker, 'detail' : detail})
+
+def post_detail(request, id):
+    if request.method == 'GET':
+        company = Company.objects.get(id = id)
+        posts = Post.objects.filter(company = company)
+        return render(request, 'post_detail.html', {'posts' : posts, 'company': company})
+    

@@ -2,11 +2,14 @@
 {% load static %}
 
 {% block content %}
-    <div class="shadow">
-        <div class="card" style="max-width: 600px;">  
+    <center>    
+        <div class="card shadow" style="max-width: 600px;">  
             <style>
                 .card {
                     background-image: linear-gradient(to left, rgba(161, 216, 110, 0), rgb(77, 212, 95));
+                }
+                .btn-success {
+                    background-image: linear-gradient(to left, rgba(161, 216, 110, 0), rgb(31, 231, 57));
                 }
             </style>                        
             <div class="row no-gutters">                                             
@@ -29,21 +32,25 @@
                         <b>qualification :</b><span class="card-body">{{seeker.qualification}}</span> <br>
                         <b>experience :</b><span class="card-body">{{seeker.experience}}</span> <br>
                         <b>address :</b><span class="card-body">{{seeker.address}}</span> <br>
-                        <b>issued_id :</b><span class="card-body">{{seeker.issued_id}}</span> <br>
+                        {% if not detail %}
+                            <b>issued_id :</b><span class="card-body">{{seeker.issued_id}}</span> <br>
+                        {% endif %}
                         <b>phone :</b><span class="card-body">{{seeker.phone}}</span> <br>
                         <b>email :</b><span class="card-body">{{seeker.user.email}}</span> <br>
                         <b>Verified :</b>
                         {% if seeker.is_verified %}<span class="card-body"><i>Yes</i></span>
                         {% else %}<span class="card-body"><i>Not Yet</i></span>
                         {% endif %}
+
+                        {% if not detail %}
                             <div class="m-2 p-0">
-                              <a class="btn btn-info" href="{% url 'demoapp:profile_update' %}">update</a>
+                              <a class="btn btn-success" href="{% url 'demoapp:profile_update' %}">update</a>
                               <a class="btn btn-outline-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
                             </div>
-                        </div>
+                        {% endif %}                    
                     </div>
                 </div>
             </div>
         </div>
-    </div>  
+    </center> 
 {% endblock %}

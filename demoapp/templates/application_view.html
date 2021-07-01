@@ -24,7 +24,7 @@
                         <tr>
                             <td>{{ app.company }}</td>
                             <td>{{ app.post }}</td>
-                            <td><img class="img-thumbnail" src="{{ app.cv_applied.cv.url }}" height="200" width="180"></td>
+                            <td><img class="img-thumbnail" src="{{ app.cv_applied.cv.url }}" height="200" width="180" alt=" * NO CV"></td>
                             <td>{{ app.apply_date }}</td>                            
                             {% if app.status  %}                        
                                 <td class="text-center"><span class="badge badge-success badge">Accepted</span></td>
@@ -38,7 +38,7 @@
                 </table> <hr>
                                 
             {% endif %}
-            <a class="btn btn-info" href="{% url 'demoapp:base' %}">Apply Now</a> 
+            <a class="btn btn-info" href="{% url 'demoapp:base' %}">Apply Now</a>  <br> <br> <br>
 
         {% elif a_company %}
         
@@ -59,7 +59,7 @@
                             <td class="text-center">{{ app.post.id }}</td>
                             <td>{{ app.post }}</td>
                             <td class="text-center"><a class="text-info" href="{% url 'demoapp:seeker_detail' app.seeker.id %}">{{ app.seeker.name }}</a></td>
-                            <td><img class="img-thumbnail" src="{{ app.cv_applied.cv.url }}" height="200" width="180"></td>
+                            <td><img class="img-thumbnail" src="{{ app.cv_applied.cv.url }}" height="200" width="180" alt=" * NO CV"></td>
                             <td>{{ app.apply_date }}</td>    
                             {% if app.status  %}                                               
                                 <td><a class="btn btn-danger btn-sm" href="{% url 'demoapp:cancel_application' app.id %}">cancel application</a></td>
@@ -73,4 +73,14 @@
         {% endif %}            
     </center>    
   </div>
+    {% if a_seeker %}
+        <center>
+            <footer>
+                <p>
+                    <b>note :</b> <i>CV</i> adds a positve impact to your application . <br>
+                    So, every time apply with a <i><b>CV</b></i> .
+                </p>
+            </footer>
+        </center>
+    {% endif %}
 {% endblock %}
