@@ -1,25 +1,126 @@
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
 
     {% block content %}
-        <div class="container-fluid shadow"> <br>
+
+        <style>   
+            #register{
+                background-image: linear-gradient(to left, rgba(25, 44, 7, 0), rgba(53, 226, 197, 0.966), rgba(25, 44, 7, 0), rgba(53, 226, 197, 0.966),);
+                color:whitesmoke;    
+                border: 1.4px solid rgb(41, 170, 187);                          
+                }
+            h6{
+                font-style: italic;
+                font-weight: lighter;
+            }        
+            #already{
+                color: rgb(231, 221, 221) ;
+            }
+            hr{
+                color: aqua;
+            }  
+            .btn{
+                border-right-width: 2.5px;
+                text-align: center;                
+                opacity: 88%;
+            }
+            #update{
+                border-bottom: 2px solid aqua;
+                letter-spacing: 3px;
+            }            
+        </style>
+
+        <div class="container rounded" id="register"> <br>
             <center> 
-            <h2><strong><u>Update your profile here !!</u></strong></h2> 
+            <h2><strong  id="update">Update your profile here</strong></h2>  <br>
             </center>
-            {% if a_company %} 
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ company_profile|crispy }}
-                    <input class="btn btn-success" type="submit" value="update"> <br> 
-                </form>
-            {% elif a_seeker %}  
-                <form method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ seeker_profile|crispy }}
-                    <input class="btn btn-success" type=    "submit" value="update"> <br>
-                </form>
-            {% endif %}
+            
+            <div class="card-header shadow"></div>
+                {% if a_company %} 
+                
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="form-row"> 
+                            <div class="form-group col-sm-6 mb-0">                                
+                                {{ company_profile.cname|as_crispy_field }}                            
+                                {{ company_profile.ctype|as_crispy_field }}                                
+                            </div>                            
+
+                            <div class="form-group m-2 p-1 col-sm-4 mb-0">
+                                {{ company_profile.estd|as_crispy_field }}
+                                {{ company_profile.ceo|as_crispy_field }}                                
+                            </div>
+
+                            <div class="form-group col-sm-7">
+                                {{ company_profile.clocation|as_crispy_field }} 
+                            </div>
+
+                            <div class="form-group col-sm-2">
+                                {{ company_profile.phone|as_crispy_field }}
+                            </div>
+                           
+                                  
+                            
+                                {{ company_profile.logo|as_crispy_field }} 
+                                                                               
+                        </div>
+
+                        <center>
+                            <input class="btn btn-outline-info" type="submit" value="update">  <br> <br>              
+                        </center>    
+                             
+                    </form>
+   
+                {% elif a_seeker %}  
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row"> 
+                            <div class="form-group col-md-6  mb-0">
+                                {{ seeker_profile.name|as_crispy_field }}
+                                <div class="form-group col-md-5">
+                                    {{ seeker_profile.sex|as_crispy_field }}
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-5">
+                                {{ seeker_profile.nationality|as_crispy_field }}
+                                <div class="form-group col-md-6">
+                                    {{ seeker_profile.dob|as_crispy_field }}
+                                </div>
+                            </div>  
+
+                            <div class="form-group col-sm-6">
+                                {{ seeker_profile.qualification|as_crispy_field }}  
+                                <div class="form-group col-sm-4">
+                                    {{ seeker_profile.phone|as_crispy_field }}      
+                                </div>                                
+                            </div>                            
+                                   
+                            <div class="form-group p-2 col-sm-3">
+                                {{ seeker_profile.experience|as_crispy_field }}                                                        
+                                {{ seeker_profile.issued_id|as_crispy_field }}   
+                            </div> 
+
+                            <div class="form-group col-sm-9">
+                                {{ seeker_profile.address|as_crispy_field }}                         
+                            </div>  
+                            
+                            {{ seeker_profile.photo|as_crispy_field }}
+                            
+                        </div>   
+                        <center>
+                            <input class="btn btn-outline-info" type="submit" value="update">  <br> <br>              
+                        </center> 
+                    </form>
+                {% endif %}
+            </div> <br>
+            <footer>
+                <center>
+                    <h6 style="color: white; font-weight: 200;">( note : phone field in  " +91xxxxxxxxxx " format )</h6> 
+                </center>
+            </footer>
         </div>
     {% endblock %}
 

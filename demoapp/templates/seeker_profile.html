@@ -1,56 +1,109 @@
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
 {% load static %}
 
 {% block content %}
-    <center>    
-        <div class="card shadow" style="max-width: 600px;">  
-            <style>
-                .card {
-                    background-image: linear-gradient(to left, rgba(161, 216, 110, 0), rgb(77, 212, 95));
-                }
-                .btn-success {
-                    background-image: linear-gradient(to left, rgba(161, 216, 110, 0), rgb(31, 231, 57));
-                }
-            </style>                        
+    <center>
+
+        <style>
+            .card {
+                background-image: linear-gradient(to left, rgba(131, 204, 58, 0.062), rgb(35, 214, 146));
+            }            
+            #s-profile{
+                float: left;
+                font-family: 'Times New Roman', Times, serif;
+                color: black;
+                margin-left: 8px;
+            }
+            .card-title{
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                color: black;
+            }
+            .s-item{
+                float: left;
+                font-family: cursive;
+                font-weight: 100;
+                color: rgba(0, 0, 0, 0.788);   
+                margin-left: 10px;   
+                line-break: auto;          
+            }
+            .card-body{
+                height: auto;
+                width: auto;
+                box-shadow: 100px;
+                stroke-opacity: initial;
+                line-break: auto; 
+            }
+            #verified{
+                float: left;
+                margin-left: 6px;
+                color: rgb(21, 42, 231);
+                padding: 4px;
+            }
+            #jumbo{
+                background-image: linear-gradient(to left, rgba(131, 204, 58, 0.062), rgb(35, 214, 146), rgba(131, 204, 58, 0.062));               
+            }
+        </style>
+        <div class="container jumbotron" id="jumbo">
+        <div class="card shadow" style="display: block;">                               
             <div class="row no-gutters">                                             
                 <div class="col-sm-4">         
                     {% if seeker.photo %}                   
-                    <div class="shadow h-100 w-100">
-                        <img class = "rounded-circle m-0 border-right-0 card-img-top" src="{{ seeker.photo.url }}" alt="upload" height="200" width="240"><br>
-                    </div>
+                        <div class="card-img shadow h-100 w-100">
+                            <img class = "img-responsive rounded-circle" src="{{ seeker.photo.url }}" alt="upload" height="200" width="200"><br>
+                            <h5 class="card-title" style="font-family: cursive; font-weight: 100; background-color: rgb(233, 23, 23); color: white; margin-top: 6px;">{{seeker.name}}</h5>
+                        </div>
                     {% else %}
-                        <img src="https://unoreads.com/user_profile_pic/demo-user.png" class="img m-2 p-2" height="200"  width="240">
+                        <div class="card-img shadow h-100 w-100">
+                            <img src="https://unoreads.com/user_profile_pic/demo-user.png" class="img m-2 p-2" height="200"  width="240">
+                            <h5 class="card-title" style="font-family: cursive; font-weight: 100; background-color: rgb(233, 23, 23); color: white; margin-top: 6px;">{{seeker.name}}</h5>
+                        </div>
                     {% endif %}                    
                 </div>
 
                 <div class="col-sm-7">
                     <div class="card-body"> 
-                        <h5 class="card-title">{{seeker.name}}</h5> <hr>
-                        <b>sex :</b><span class="card-body">{{seeker.sex}}</span> <br>
-                        <b>age :</b><span class="card-body">{{seeker.age}}</span> <br>
-                        <b>nationality :</b><span class="card-body">{{seeker.nationality}}</span> <br>
-                        <b>qualification :</b><span class="card-body">{{seeker.qualification}}</span> <br>
-                        <b>experience :</b><span class="card-body">{{seeker.experience}}</span> <br>
-                        <b>address :</b><span class="card-body">{{seeker.address}}</span> <br>
+                        <h5 class="card-title"><b> Profile </b></h5> <hr>
+                        <b id="s-profile">sex :</b><span class="s-item">{{seeker.sex}}</span> <br>
+                        <b id="s-profile">age :</b><span class="s-item">{{seeker.age}}</span> <br>
+                        <b id="s-profile">nationality :</b><span class="s-item">{{seeker.nationality}}</span> <br>
+                        <b id="s-profile">qualification :</b><span class="s-item">{{seeker.qualification}}</span> <br>
+                        <b id="s-profile">experience :</b><span class="s-item">{{seeker.experience}}</span> <br>
+                        <b id="s-profile">address :</b><span class="s-item">{{seeker.address}}</span> <br>
+
+                        {% if seeker.phone %}
+                            <b id="s-profile">phone :</b><span class="s-item">{{seeker.phone}}</span> <br>
+                        {% else %}
+                            <b id="s-profile">phone :</b><span class="s-item">none</span> <br>
+                        {% endif %}
+
+                        {% if seeker.user.email %}
+                            <b id="s-profile">email :</b><span class="s-item">{{seeker.user.email}}</span> <br>
+                        {% else %}
+                            <b id="s-profile">email :</b><span class="s-item">none</span> <br>
+                        {% endif %} 
+
                         {% if not detail %}
-                            <b>issued_id :</b><span class="card-body">{{seeker.issued_id}}</span> <br>
-                        {% endif %}
-                        <b>phone :</b><span class="card-body">{{seeker.phone}}</span> <br>
-                        <b>email :</b><span class="card-body">{{seeker.user.email}}</span> <br>
-                        <b>Verified :</b>
-                        {% if seeker.is_verified %}<span class="card-body"><i>Yes</i></span>
-                        {% else %}<span class="card-body"><i>Not Yet</i></span>
-                        {% endif %}
+                            <b id="s-profile">issued_id :</b><span class="s-item">{{seeker.issued_id}}</span> <br>
+                        {% endif %} 
+                        
+                        {% if seeker.is_verified %}
+                            <b id="s-profile">Verified :</b>
+                            <i class="icofont-check fa-lg" id="verified"></i>
+                        {% else %}
+                            <b id="s-profile">Verified :</b>
+                            <span class="s-item"><i>Not Yet</i></span> 
+                        {% endif %} <br>
 
                         {% if not detail %}
                             <div class="m-2 p-0">
-                              <a class="btn btn-success" href="{% url 'demoapp:profile_update' %}">update</a>
-                              <a class="btn btn-outline-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+                              <a class="btn btn-success btn-sm" href="{% url 'demoapp:profile_update' %}">update</a>
+                              <a class="btn btn-outline-danger btn-sm" href="{% url 'demoapp:profile_delete' %}">remove account</a>
                             </div>
                         {% endif %}                    
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </center> 
 {% endblock %}

@@ -1,19 +1,39 @@
-<!DOCTYPE html>
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
 {%load crispy_forms_tags %}
 {% load static %}
 
 {% block content %}
-    <div class="container">  
-        {% if new_cv %}  
-            <center><h2><b>- Create a New CV -</b></h2></center>  
-        {% elif update_cv %}
-            <center><h2><b>- Update your CV -</b></h2></center>  
-        {% endif %}
-        <form method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <input class="btn btn-success" type="submit" value="POST">
-        </form>
-    </div>
+    <style>
+        #b-tx{
+            color: whitesmoke; 
+            border-bottom: 3px solid aqua;
+            line-height: 4px;
+            letter-spacing: 1px;           
+        }
+        #cont{
+            background: linear-gradient(to left, rgba(25, 44, 7, 0), rgba(53, 226, 197, 0.966), rgba(25, 44, 7, 0)); 
+        }
+        #inside-bx{
+            background: linear-gradient(to left, rgba(25, 44, 7, 0),rgba(255, 255, 255, 0.966),rgba(25, 44, 7, 0));
+        }
+        
+    </style>
+    <center>
+        <div class="container jumbotron" id="cont">  
+            {% if new_cv %}  
+                <h2><b id="b-tx"> Upload a new Resume </b></h2>
+            {% elif update_cv %}
+                <h2><b id="b-tx"> Update your Resume </b></h2>  
+            {% endif %} 
+            <div class="jumbotron shadow" id="inside-bx">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group col-md-5 mb-0">
+                        {{ form|crispy }}
+                    </div>
+                    <input class="btn btn-success" type="submit" value="Upload">
+                </form>
+            </div>
+        </div>
+    </center>
 {% endblock %} 

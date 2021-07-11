@@ -1,11 +1,34 @@
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
 
     {% block content %}
-        <div class="container">
+    <style>        
+        .rounded{
+            background-image: linear-gradient(to left, rgba(2, 26, 27, 0.938), rgba(42, 147, 161, 0.897)); 
+            color: whitesmoke; 
+            text-decoration: solid;
+            text-align: start;    
+            height: auto;
+            width: auto;      
+        }   
+        ::placeholder{
+            color: aliceblue;
+        }
+        #already{
+            color: black;            
+        }      
+        #c-submit{
+            float: right;            
+        }   
+        #update{
+            border-bottom: 1.8px solid rgb(238, 233, 233);
+        }
+    </style>    
+
+        <div class="container rounded" id="register">
             {% if registered %}
-                <div class="jumbotron">
+                <div class="card">
                     <h2><strong>SuccessFully Registered......!!</strong></h2>
                     <h3>$ Thank You $</h3> <br>
                     <center>
@@ -13,16 +36,41 @@
                     </center>
                 </div>
             {% else %}
-                    <h3><strong>Register Here !!</strong></h3> <hr>
-                    <h6><i>Already Registered ? </i><a href="{% url 'demoapp:login' %}">login</a></h6> 
+                    <br>
+                    <span id="here"><h3><strong id="update">Register Here !!</strong></h3></span>
+                    <h6><i id="already"> Already Registered ? </i><a href="{% url 'demoapp:login' %}"> login</a></h6>  <br>
                     <div class="card-header shadow">
                         <form method="POST" enctype="multipart/form-data">
                             {% csrf_token %}
-                            {{ profile_form|crispy }}
-                            {{ user_form|crispy }} 
-                            <input class="btn btn-success" type="submit" value="Register">
+                                <div class="form-row"> 
+                                    <div class="form-group col-md-5  mb-0">
+                                        {{ profile_form.cname|as_crispy_field }}
+                                        {{ profile_form.estd|as_crispy_field }}
+                                    </div>
+                                    <div class="form-group m-2 col-md-5 mb-0">
+                                        {{ profile_form.ctype|as_crispy_field }}
+                                        {{ profile_form.ceo|as_crispy_field }}
+                                    </div>  
+                                    <div class="form-group col-sm-6">
+                                        {{ profile_form.clocation|as_crispy_field }}                                        
+                                    </div>
+                                        
+                                        {{ profile_form.logo|as_crispy_field }}
+                                        {{ profile_form.phone|as_crispy_field }}                                     
+
+                                    <div class="form-group col-sm-5">
+                                        {{ user_form.username|as_crispy_field }}                                                                           
+                                        {{ user_form.email|as_crispy_field }}                                        
+                                    </div>                                         
+                                    <div class="form-group p-0 m-4 col-sm-6">     
+                                        {{ user_form.password|as_crispy_field }}                                       
+                                        {{ user_form.confirm_password|as_crispy_field }}                                      
+                                    </div>                       
+                                </div>                     
+
+                                <input class="btn btn-outline-info" id="c-submit" type="submit" value="Register"> <br> <br>
                         </form>
                     </div>
             {% endif %}
         </div>
-    {% endblock %}
+    {% endblock %} 
