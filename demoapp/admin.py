@@ -23,13 +23,13 @@ class User_Admin(UserAdmin):
     )    
 
 class Company_Admin(admin.ModelAdmin):
-    list_display = ('user', 'cname', 'ctype', 'estd', 'ceo', 'phone', 'is_verified')
+    list_display = ('user', 'cname', 'ctype', 'clocation', 'estd', 'ceo', 'phone', 'logo', 'is_verified')
 
 class Seeker_Admin(admin.ModelAdmin):
     list_display = ('user', 'name', 'sex', 'age', 'dob', 'nationality', 'qualification', 'experience', 'phone', 'address', 'issued_id', 'photo', 'is_verified')
 
 class Post_Admin(admin.ModelAdmin):
-    list_display = ('company', 'id', 'published_date', 'title', 'description', 'vaccant_for', 'no_of_vaccancy')
+    list_display = ('company', 'id', 'published_date', 'title', 'description', 'vacant_for', 'no_of_vacancy')
 
 class CV_Admin(admin.ModelAdmin):
     list_display = ('seeker', 'id', 'cv', 'upload_date')

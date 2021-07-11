@@ -1,27 +1,89 @@
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 
     {% block content %}
-        <div class="container">
-    {% if registered %}
-        <div class="jumbotron">
-            <h2><strong>SuccessFully Registered......!!</strong></h2>
-            <h3>$ Thank You $</h3> <br>
-            <center>
-            <h4><i>Please, Login to Explore the Site **</i></h4>
-            </center>
-        </div>
-    {% else %}
-            <h3><strong>Register Here !!</strong></h3> <hr>
-            <h6><i>Already Registered ? </i><a href="{% url 'demoapp:login' %}">login</a></h6> 
-            <div class="card-header shadow">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ user_form.as_p }}        
-                    {{ profile_form.as_p }}        
-                    <input class="btn btn-success" type="submit" value="Register">
-                </form>
-            </div>
-    {% endif %}
+
+    <style>   
+        #register{
+            background-image: linear-gradient(to left, rgba(25, 44, 7, 0), rgba(53, 226, 197, 0.966), rgba(25, 44, 7, 0), rgba(53, 226, 197, 0.966),);
+            color:whitesmoke;    
+            border: 1.4px solid rgb(41, 170, 187);      
+            height: auto;
+            width: auto;                    
+            }
+        h6{
+            font-style: italic;
+            font-weight: lighter;
+        }        
+        #already{
+            color: rgb(231, 221, 221) ;
+        }
+        hr{
+            color: aqua;
+        }  
+        #update{
+            border-bottom: 1.8px solid aqua;
+        }
+    </style>
+
+        <div class="container rounded" id="register">
+            {% if registered %}
+                <div class="card">
+                    <h2><strong>SuccessFully Registered......!!</strong></h2>
+                    <h3>$ Thank You $</h3> <br>
+                    <center>
+                    <h4><i>Please, Login to Explore the Site **</i></h4>
+                    </center>
+                </div>
+            {% else %}
+                    <br>
+                    <span id="here"><h3><strong id="update">Register Here !!</strong></h3></span>
+                    <h6><i id="already">Already Registered ? </i><a href="{% url 'demoapp:login' %}">login</a></h6>                     
+                    <div class="card-header shadow">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                                <div class="form-row"> 
+                                    <div class="form-group col-md-6  mb-0">
+                                        {{ profile_form.name|as_crispy_field }}
+                                        <div class="form-group col-md-5">
+                                            {{ profile_form.sex|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        {{ profile_form.nationality|as_crispy_field }}
+                                        <div class="form-group col-md-6">
+                                            {{ profile_form.dob|as_crispy_field }}
+                                        </div>
+                                    </div>  
+                                    <div class="form-group col-sm-6">
+                                        {{ profile_form.qualification|as_crispy_field }}                                        
+                                    </div>                            
+                                           
+                                    <span class="form-group m-2">{{ profile_form.experience|as_crispy_field }}</span>                                        
+                                                                             
+                                    <div class="form-group col-sm-7">
+                                        {{ profile_form.issued_id|as_crispy_field }}
+                                        {{ profile_form.address|as_crispy_field }} 
+                                    </div>  
+                                    <div class="form-group p-2 col-sm-3">
+                                        {{ profile_form.photo|as_crispy_field }}
+                                        {{ profile_form.phone|as_crispy_field }}                                        
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        {{ user_form.username|as_crispy_field }}                                       
+                                        {{ user_form.email|as_crispy_field }}
+                                    </div>                                         
+                                    <div class="form-group p-1 col-sm-5">     
+                                        {{ user_form.password|as_crispy_field }}  
+                                        {{ user_form.confirm_password|as_crispy_field }}  
+                                    </div>                       
+                                </div>                            
+                                <center>
+                                    <input class="btn btn-outline-info" type="submit" value="Register"> <br> <br>
+                                </center>
+                        </form>
+                    </div>
+            {% endif %}
         </div>
     {% endblock %}

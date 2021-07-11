@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-t))4xlfdm_7e(z4zx+zs#+m7*f+=tq&ox42iq7tlke8c1a$i1!
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+    
  
 # Application definition
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'demoapp',
     'phonenumber_field',
+    'crispy_forms' ,
 ]
 
 MIDDLEWARE = [
@@ -142,6 +143,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'demoapp.User'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MESSAGE_TAGS = {
     messages.INFO: 'alert-info',

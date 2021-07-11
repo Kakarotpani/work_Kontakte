@@ -1,12 +1,14 @@
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
 {% load static %}
 
     {% block content %}
-        <div class="jumbotron shadow">
-            <center>
-                <a class="btn btn-success" href="{% url 'demoapp:profile_view' %}">Profile</a>  
-                <a class="btn btn-warning" href="{% url 'demoapp:post_read_all' %}">Posts</a>
-                <a class="btn btn-primary" href="{% url 'demoapp:application_view' %}">Applications</a>
-            </center>
+        <div class="container jumbotron" style="position: relative;  background: linear-gradient(to left, rgba(25, 44, 7, 0), rgba(53, 226, 197, 0.966), rgba(25, 44, 7, 0)); border-radius: 10px;">
+            <div class="jumbotron shadow" style="background: linear-gradient(to left, rgba(25, 44, 7, 0),rgba(255, 255, 255, 0.966),rgba(25, 44, 7, 0)); border-radius: 16px;">
+                <center>
+                    <a class="btn btn-success" href="{% url 'demoapp:profile_view' %}">Profile</a>  
+                    <a class="btn btn-warning" href="{% url 'demoapp:post_read_all' %}">Posts</a>
+                    <a class="btn btn-primary" href="{% url 'demoapp:application_view' %}">Applications</a>
+                </center>
+            </div>
         </div>        
     {% endblock %}
