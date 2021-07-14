@@ -1,38 +1,146 @@
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
 {% load static %}
 {% block content %}
-        <div>            
-            <center>  
-                <h3>{{ seeker.name }}'s CVs</h3>  <br>
-                {% if cv.count > 0 %}                            
-                    <table border="2">
-                        <tr>
-                            <th>Resume</th>     
-                            <th>update_Resume</th>   
-                            <th>Delete_Resume</th>
-                        </tr>
-                        {% for data in cv %}  
-                        {% if data.cv %}
-                            <tr>
-                                <td><img class="img-thumbnail" src="{{ data.cv.url }}" height="200" width="180"></td>                       
-                                <td class="text-center" ><a class="btn btn-info btn-sm center" href="{% url 'demoapp:cv_update' data.id %}">edit</a></td>  
-                                <td class="text-center"><a class="btn btn-danger btn-sm" href="{% url 'demoapp:cv_delete' data.id %}">delete</a></td>                          
-                            </tr>
-                        {% endif %}
-                        {% endfor %}
-                    </table>  <br>
-                {% else %} 
-                    <h4><i>No Cv yet</i></h4>
-                {% endif %}  
-                <h5><a class="btn btn-primary" href="{% url 'demoapp:cv_create' %}">Add CV</a></h5> <hr>                    
-            </center>   
-        </div>
+
+    <style>
+        #cv {
+            transition:transform 0.20s ease;
+        }
+
+        #cv:hover {
+            -webkit-transform:scale(100); 
+            transform:scale(2.85);
+            overflow-y: visible;
+            margin: auto;
+            transform-style: preserve-3d;            
+        }
+
+        *, *::after, *::before {
+        box-sizing: inherit;
+        }
+
+        *, *:before, *:after {
+        box-sizing: border-box;
+        outline: none;
+        }      
+
+        figure {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 400px;
+        width: auto;
+        align-content: center;
+        align-items: center;
+
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        overflow: hidden;
+        }
+        figure:hover {
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+        }
+        figure:hover img {
+        transform: scale(1.25);
+        }
+        figure:hover figcaption {
+        bottom: 0;
+        }
+        figure h1 {
+        position: absolute;
+        top: 50px;
+        left: 20px;
+        margin: 0;
+        padding: 0;
+        color: white;
+        font-size: 60px;
+        font-weight: 100;
+        line-height: 1;
+        }
+        figure img {
+        height: 400px;
+        width: auto;
+
+        transition: 0.25s;
+        }
+        figure figcaption {
+        position: absolute;
+        bottom: -33%;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 30px;
+        background-color: rgba(0, 0, 0, 0.85);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+        color: white;
+        line-height: 1;
+        transition: 0.25s;
+        }
+        figure figcaption h3 {
+        margin: 0 0 20px;
+        padding: 0;
+        }
+        figure figcaption p {
+        font-size: 14px;
+        line-height: 1.75;
+        }
+        #app{
+            border-bottom: 3px solid rgb(0, 255, 234);
+            color: whitesmoke;
+            letter-spacing: 2px;
+        }
+    </style>
+
+    <center>
+        <h3><b id="app"> {{ seeker.name }}'s </b> <br>
+        <i style="color: white; font-weight: 200; font-size: large; letter-spacing: 3px;">Resume</i> </h3> <br> <br>
+    </center>
+
+    {% if cv.count < 1 %}
         <center>
-            <footer>
-                <p>
-                    <b>note :</b> please maintain only 1 CV in your profile for convinience . <br>
-                    This site automatically upload the <i><b>latest Cv</b></i> while applying for any post.
-                </p>
-            </footer>
+            <h3 style="color: white; font-weight: 300; font-size: large;">( No Resume yet !! )</h3> 
         </center>
+    {% else %}  
+        <div class="container" id="">       
+            <div class="row">               
+                {% for data in cv %} 
+                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up">
+                        <figure class="image-block">
+                            <h1>Resume</h1>
+                            {% if data.cv %}
+                                <img src="{{ data.cv.url }}" alt=" Loading...." />
+                            {% else %}
+                                <img src="https://cdn.onlinewebfonts.com/svg/img_51902.png" alt=" Loading...." />
+                            {% endif %}
+                            <figcaption>                                  
+                                <p>                                         
+                                    {% if data.cv %}
+                                        <a class="badge badge-pill badge-primary" href="{{ data.cv.url }}">view</a> <br>
+                                    {% endif %}     
+                                    <i class="fas fa-clock"></i> {{ data.upload_date }} <br>                        
+                                </p>  
+                                    <a class="btn btn-success btn-sm " href="{% url 'demoapp:cv_update' data.id %}">edit</a>
+                                    <a class="btn btn-danger btn-sm" href="{% url 'demoapp:cv_delete' data.id %}">delete</a> 
+                            </figcaption>   
+                        </figure>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>              
+    {% endif %} <br> 
+    <center>
+        <a class="btn btn-outline-info" href="{% url 'demoapp:cv_create' %}">Add Resume</a>  <br> <br> <br>
+    </center>
+
+    <footer>
+        <center>
+            <p style="color: whitesmoke; font-weight: 300;">
+                <b style="color: darkgray; font-weight: 400; ">note :</b> please maintain only 1 Resume in your profile for convenience . <br>
+                This site automatically upload the <i><b>latest Resume</b></i> while applying for any post.
+            </p>
+        </center>
+    </footer>
+    
 {% endblock %} 

@@ -1,48 +1,54 @@
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
 {% load static %}
 
-    {% block content %}
-        <div class="container">
-            <h2><b>Search Results :</b></h2>
-            <h5>({{ post_request.count }} results found.)</h5> <br>
-            {% if post_count < 1 %}
-                <h3>Company hasn't posted yet</h3>
-                    <h4><a>{{ post_request.cname }}</a></h4>                
-            {% else %}
-                
-                <table class="shadow" border="2">
-                    <tr class="table-active">
-                        <th>company</th>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Published Date</th>
-                        <th>vaccant post</th>
-                        <th class="text-center">no. of Vaccancy</th>
-                        <th>location</th> 
-                        {% if user.is_authenticated %}     
-                            {% if user.is_seeker %}
-                                <th>Apply</th>
-                            {% endif %}   
-                        {% endif %} 
-                                                                         
-                    </tr>
-                        {% for data in post_request %}  
-                    <tr>
-                        <td>{{ data.company.cname }}</td>
-                        <td>{{ data.title }}</td>
-                        <td>{{ data.description }}</td>
-                        <td>{{ data.published_date }}</td>
-                        <td>{{ data.vaccant_for }}</td>
-                        <td>{{ data.no_of_vaccancy }}</td>  
-                        <td>{{ data.company.clocation }}</td> 
-                        {% if user.is_authenticated %}     
-                            {% if user.is_seeker %}
-                            <td><a class="btn btn-outline-dark btn-sm" href="{% url 'demoapp:application_create' post_id=data.id company_id=data.company.id %}">Apply</a></td>
-                            {% endif %}   
-                        {% endif %}                                                     
-                    </tr>
-                        {% endfor %}
-                </table>
-            {% endif %}
-        </div>
-    {% endblock %}
+{% block content %}
+    <style>
+        .badge-info {
+            background-image: linear-gradient(to left,  rgba(224, 16, 190, 0.795), rgba(11, 105, 245, 0.425));             
+        }             
+        .badge { 
+            width: max-content;  
+            font-weight: lighter;  
+            letter-spacing: 1px;          
+        }   
+        .jumbotron{
+            background: linear-gradient(to left, rgba(25, 44, 7, 0), rgba(53, 226, 197, 0.966), rgba(25, 44, 7, 0));            
+        }
+        .search-title{
+           
+            color: black;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            border-bottom: 1.2px solid black;
+        }      
+        #result-css{
+            padding: 6.2px;
+        }
+        
+
+    </style>
+
+    <center>
+        <div class="container jumbotron">
+            <div class="search-title">
+                <h2><b>  Search  Results  </b></h2>
+            </div>
+                {% if result_count == 1 %}
+                    <h6>({{ result_count }} <i>  matching result found .</i>)</h6> <br>  
+                {% else %}
+                    <h6>({{ result_count }} <i>  matching results found .</i>)</h6> <br>                       
+                {% endif %}
+
+            {% for data in result %}             
+                <div id="result-css">
+                    {% if data.company.id %}
+                        <a class="badge badge-pill badge-info" href="{% url 'demoapp:company_detail' data.company.id %}">{{ data }}</a> <br>
+                    {% else %}
+                        <a class="badge badge-pill badge-info" href="{% url 'demoapp:company_detail' data.id %}">{{ data }}</a> <br>
+                    {% endif %}
+                    
+                </div>
+            {% endfor %}
+        </div>    
+    </center>
+    
+{% endblock %}

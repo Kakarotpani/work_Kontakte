@@ -1,0 +1,144 @@
+{% extends 'parent.html' %}
+{% load static %}
+
+{% block content %}
+
+    <style> 
+        .container{
+            align-self: center;
+        }        
+    
+        @import url('https://fonts.googleapis.com/css?family=Quicksand:400,700');
+        
+        *,
+        *::before,
+        *::after {
+        box-sizing: border-box;
+        }
+
+        body {
+        color: #272727;
+        font-family: 'Quicksand', serif;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: 0;        
+        }
+
+        .main{
+        max-width: 1200px;
+        margin: 0 auto;
+        }
+
+        #h1-tx {
+            font-size: 24px;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        img {
+        height: auto;
+        max-width: 100%;
+        vertical-align: middle;
+        }
+
+        .cards {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        }
+
+        .cards_item {
+        display: flex;
+        padding: 1rem;
+        }
+
+        @media (min-width: 40rem) {
+        .cards_item {
+            width: 50%;
+        }
+        }
+
+        @media (min-width: 56rem) {
+        .cards_item {
+            width: 33.3333%;
+        }
+        }
+
+        .card {
+        background-color: white;
+        border-radius: 2px;
+        box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        }
+
+        .card_content {
+        padding: 1rem;
+        background: linear-gradient(to bottom left, #000000 80%, #00000054 100%);
+        }
+
+        .card_title {
+        color: #ffffff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: capitalize;
+        margin: 0px;
+        }
+
+        .card_text {
+        color: #ffffff;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        margin-bottom: 1.25rem;    
+        font-weight: 400;
+        }
+        
+        #post-title{            
+            letter-spacing: 3px;
+            height: auto;
+            width: auto
+        }        
+        .btn-success{
+            background: linear-gradient(to left, rgba(25, 44, 7, 0), rgba(53, 226, 197, 0.966), rgba(25, 44, 7, 0));
+        }
+    </style>
+
+        <center>
+            <div class="main">
+                <a class="btn btn-success btn-lg" id="post-title" href="{% url 'demoapp:company_detail' company.id %}"> {{ company.cname }} </a> <br>
+                    <b style="font-weight: 400; color: whitesmoke; font-size: x-large; letter-spacing: 3px;">- All posts -</b></h1> <br> <br>   
+                {% if  posts.count > 0 %}
+                    
+                        <ul class="cards">
+                            {% for data in posts %}
+                                <li class="cards_item">
+                                    <div class="card">
+                                    <div class="card_image"><img src="https://wallpaperaccess.com/full/123112.jpg"></div>
+                                    <div class="card_content">
+                                        <h5 class="card_title" style="color: rgba(51, 181, 185, 0.849);">{{ data.title }}</h5>
+                                        <span style="color: rgb(223, 28, 61); font-weight: bold;">Post id: {{ data.id }} </span> <br>
+
+                                        <p class="card_text"> <br>                                              
+                                            <i class="fas fa-id-badge"> </i> {{ data.vacant_for }} <br> 
+                                            <i class="fas fa-users"></i> {{ data.no_of_vacancy }} <br> 
+                                            <i class="fas fa-clock"></i> {{ data.published_date|date:"D M Y" }} <br> <br>
+                                            <i class="fas fa-briefcase"></i> {{ data.description }} <br> 
+                                        </p>
+                                    </div>
+                                    </div>
+                                </li>  
+                        {% endfor %}  
+                        </ul>
+                    
+                {% else %}
+                    <center>
+                        <h4 style="color: white; font-weight: 100;">No Posts yet</h4>
+                    </center>
+                {% endif %} <br> 
+            </div>  
+        </center>
+{% endblock %}

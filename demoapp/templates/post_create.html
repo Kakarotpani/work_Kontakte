@@ -1,18 +1,48 @@
-<!DOCTYPE html>
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
+{%load crispy_forms_tags %}
 {% load static %}
 
 {% block content %}
-    <div class="container">    
-        {% if new_post %}  
-            <center><h2><b>- Create a New Post -</b></h2></center>   
+    <style>
+        .rounded{
+            background-image: linear-gradient(to left, rgba(2, 26, 27, 0.938), rgba(42, 147, 161, 0.897)); 
+            color: whitesmoke;             
+        }
+        .create-center{
+            padding: 6px;
+            border-bottom: 2.4px solid aqua;
+            letter-spacing: 3px;
+        }        
+    </style>
+    <div class="container rounded">   <br> 
+        {% if new_post %} 
+            <center><h2>- <b class= "create-center">  Create a New Post </b></h2></center>   
         {% elif update_post %}
-            <center><h2><b>- Update your Post -</b></h2></center>  
-        {% endif %}         
+            <center><h2>- <b class= "create-center">  Update your Post </b></h2></center>  
+        {% endif %}   <br>
         <form method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <input class="btn btn-success" type="submit" value="POST">
+
+            <div class="form-row"> 
+                <div class="form-group col-md-8">                
+                        {{ form.title|as_crispy_field }}
+                    <div class="form-group col-md-6">
+                        {{ form.vacant_for|as_crispy_field }} 
+                    </div>  
+
+                    <div class="form-group col-md-4">
+                        {{ form.no_of_vacancy|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-7">
+                    {{ form.description|as_crispy_field }}
+                </div>
+            </div>
+            
+            <center>
+                <input class="btn btn-outline-info" id="c-submit" type="submit" value="POST"> <br> <br>
+            </center>
         </form>
     </div>
 {% endblock %}

@@ -1,21 +1,118 @@
-{% extends 'base.html' %}
+{% extends 'parent.html' %}
 {% load static %}
 
 {% block content %}
-  <center>
-    <div class="panel-heading"><h3>Profile</h3> 
-        <div class="panel-body">
-            company : {{company.cname}} <br>
-            company type : {{company.ctype}} <br>
-            established : {{company.estd}} <br>
-            ceo : {{company.ceo}} <br>
-            email : {{company.user.email}} <br>
-            phone : {{company.phone}} <br>
-            Location : {{company.clocation}} <br>
-            verified : {{company.is_verified}} <br> <br>
-            <a class="btn btn-info" href="{% url 'demoapp:profile_update' %}">update</a> <br> <br>
-            <a class="btn btn-danger" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+    <center>
+
+        <style>
+            .card {              
+                background-image: linear-gradient(to left, rgba(131, 204, 58, 0.062), rgb(35, 214, 146));           
+            }
+            .btn-danger {
+                background-image: linear-gradient(to left, rgba(161, 216, 110, 0), rgb(31, 231, 57));
+            }
+            #s-profile{
+                float: left;
+                font-family: 'Times New Roman', Times, serif;
+                color: black;
+                margin-left: 8px;
+
+            }
+            .card-title{
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                color: black;
+            }
+            .s-item{
+                float: left;
+                font-family: sans-serif;
+                font-weight: 100;
+                color: rgba(0, 0, 0, 0.788);   
+                margin-left: 14px;   
+                line-break: auto; 
+            }
+            .card-body{
+                height: auto;
+                width: auto;
+                box-shadow: 100px;
+                stroke-opacity: initial;
+            }
+            #verified{
+                float: left;
+                margin-left: 6px;
+                color: rgb(21, 42, 231);
+                padding: 4px;
+            }   
+            #jumbo{
+                background-image: linear-gradient(to left, rgba(131, 204, 58, 0.062), rgb(35, 214, 146), rgba(131, 204, 58, 0.062));              
+                height: auto;
+                width: auto;			
+                text-align: center;						
+                margin:auto;
+                margin-top: 0%;
+                margin-bottom: auto;
+                margin-left: auto;
+                margin-right: auto;	
+                padding: auto;
+                padding-top: auto;
+                padding-bottom: auto;
+                padding-left: auto;
+                padding-right: auto;		
+                aspect-ratio: auto;
+                align-items: center;
+                align-self: center;	    
+                letter-spacing: 1px;            	    
+            }       
+            
+        </style>
+        <div class="container jumbotron" id="jumbo">
+        <div class="card shadow" style="text-align: center;">                       
+            <div class="row no-gutters">                                             
+                <div class="col-sm-4">         
+                    {% if company.logo %}
+                        <div class="shadow h-100 w-100">
+                            <img class = "img-responsive rounded-circle" src="{{ company.logo.url }}" height="200" width="200"><br>
+                            <h5 class="card-title" style="font-family: cursive; font-weight: 100; background-color: rgb(233, 23, 23); color: white; margin-top: 6px;">{{company.cname}}</h5>                            
+                        </div>
+                    {% else %}
+                        <div class="shadow h-100 w-100">
+                            <img class="rounded-circle" src="{% static 'assets\img\company-demo.png' %}" class="rounded-circle img m-2 p-2" height="200"  width="200">
+                            <h5 class="card-title" style="font-family: cursive; font-weight: 100; background-color: rgb(233, 23, 23); color: white; margin-top: 6px;">{{company.cname}}</h5>
+                        </div>
+                    {% endif %}    
+                </div>
+
+                <div class="col-sm-7">
+                    <div class="card-body"> 
+                        <h5 class="card-title"><b > Profile </b></h5> <hr>     
+                        <b id="s-profile">Type : </b> <span class="s-item">  {{company.ctype}}  </span> <br>
+                        <b id="s-profile">CEO : </b> <span class="s-item">  {{company.ceo}}  </span> <br>
+                        <b id="s-profile">Location : </b> <span class="s-item">  {{company.clocation}}  </span> <br>
+                        <b id="s-profile">Established : </b> <span class="s-item">  {{company.estd}}  </span> <br>
+                        <b id="s-profile">email : </b> <span class="s-item">  {{company.user.email}}  </span> <br> 
+                        <b id="s-profile">phone : </b> <span class="s-item">  {{company.phone}}  </span> <br>                        
+                                              
+                        {% if company.is_verified %}
+                            <b id="s-profile">Verified : </b>
+                            <i class="icofont-check fa-lg" id="verified"></i>
+                        {% else %}
+                            <b id="s-profile">Verified : </b>
+                            <span class="s-item" style="color: rgb(255, 0, 106); font-size: medium;"> <i>Not Yet</i></span>
+                        {% endif %} <br> <br>
+
+                        {% if not detail %}                            
+                            <div class="m-2 p-0">
+                                <a class="btn btn-success btn-sm" href="{% url 'demoapp:profile_update' %}">update</a>
+                                <a class="btn btn-outline-danger btn-sm" href="{% url 'demoapp:profile_delete' %}">remove account</a>
+                            </div>
+                        {% else %}        
+                            <center>
+                                <a class="btn btn-sm btn-success" href="{% url 'demoapp:post_detail' company.id %}">view Posts</a>
+                            </center>
+                        {% endif %}                                          
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-  </center>
+        </div>
+    </center>
 {% endblock %}

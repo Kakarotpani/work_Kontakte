@@ -14,10 +14,10 @@ class User(AbstractUser):
 
 class Company(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank = False, null = False)
-    cname = models.CharField(max_length = 60, null = True, blank = True)    
+    cname = models.CharField(unique = True, max_length = 60, null = False, blank = False)    
     ctype = models.CharField(max_length = 40, null = True, blank = True)  
     clocation = models.CharField(max_length = 40, null = True, blank = True, default = "INDIA") 
-    estd = models.PositiveSmallIntegerField( help_text = "(yyyy-mm-dd)",
+    estd = models.PositiveSmallIntegerField(
             validators=[
                 MaxValueValidator(timezone.now().year),
                 MinValueValidator(1900)
@@ -25,6 +25,7 @@ class Company(models.Model):
     )
     ceo = models.CharField(max_length = 30, editable=True, blank=False, null=False)
     phone = PhoneNumberField(max_length = 15, default = '+91', blank = True, null = True)
+    logo = models.ImageField(blank=True, null=True, upload_to = 'company_logo')
     is_verified = models.BooleanField(default = False)
 
     def __str__(self):
@@ -36,12 +37,15 @@ class Seeker(models.Model):
     name = models.CharField(max_length = 60, blank = False, null = False)
     sex = models.CharField(max_length = 6, blank=False, null=False)
     age = models.PositiveIntegerField(blank=False, null=False)
-    dob = models.DateField(auto_now=False, auto_now_add=False, help_text = "(yyyy-mm-dd)")
-    nationality = models.CharField(max_length = 30, blank=False, null=False)
-    qualification = models.TextField(max_length=150, blank=False, null=False)
-    experience = models.FloatField(blank=True, null=True)
+    dob = models.DateField(auto_now=False, auto_now_add=False)
+    nationality = models.CharField(max_length = 30, blank=False, null=False, default = "Indian")
+    qualification = models.CharField(max_length=150, blank=False, null=False)
+    experience = models.FloatField(blank=True, null=True, validators=[
+                MinValueValidator(0.00)
+            ]
+    )
     phone = PhoneNumberField(max_length = 15, default = '+91', blank = True, null = True)
-    address = models.TextField(max_length=150, blank=False, null=False)
+    address = models.CharField(max_length=150, blank=False, null=False)
     issued_id = models.CharField(max_length = 20, blank=False, null=False)
     photo = models.ImageField(blank=True, null=True, upload_to = 'seeker_dp')
     is_verified = models.BooleanField(default = True)
@@ -57,11 +61,11 @@ class CV(models.Model):
 
 class Post(models.Model):
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    published_date = models.DateField(auto_now_add=True)
-    title = models.CharField(max_length = 40, blank=False, null=False)
+    published_date = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length = 60, blank=False, null=False)
     description = models.TextField(max_length= 200, blank=False, null=False)
-    vaccant_for = models.CharField(max_length = 40, blank=False, null=False)
-    no_of_vaccancy = models.IntegerField(blank=False, null=False)
+    vacant_for = models.CharField(max_length = 40, blank=False, null=False)
+    no_of_vacancy = models.IntegerField(blank=False, null=False)
 
     def __str__(self):
         return self.title

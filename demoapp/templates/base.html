@@ -1,91 +1,343 @@
 <!DOCTYPE html>
-{% load static %}
 <html lang="en">
+{% load static %}
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>work - kontakte</title>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Work overflow</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">  
+
+  <!-- Favicons -->
+  <link class="site-logo" rel="shortcut icon" href="{% static 'assets\img\web-logo-removebg-preview.png' %}">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <link rel=”stylesheet” href=”https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css”>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Roboto:300,300i,400,400i,500,500i,700,700i&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/animate.css/animate.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/icofont/icofont.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/venobox/venobox.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/owl.carousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
 </head>
-<body>  
-    <nav class="navbar navbar-expand-lg bg-light sticky-top">
-        <div class="container">            
-            <a class="navbar-brand text-dark" href="{% url 'demoapp:base' %}"> 
-                <img class="rounded text-center" src="https://www.freepnglogos.com/uploads/apple-logo-png/apple-logo-png-dallas-shootings-don-add-are-speech-zones-used-4.png" height="40" width="40" alt="logo">
-            </a>
-            <a class="navbar-brand text-dark" href="{% url 'demoapp:comapany_register' %}">Register/Company</a>
-            <a class="navbar-brand text-dark" href="{% url 'demoapp:seeker_register' %}">Register/Seeker</a>    
-            {% if user.is_authenticated %}                 
-                {% if user.is_company %}
-                    <a class="navbar-brand text-dark" href="{% url 'demoapp:company_dash' %}">DashBoard</a>                        
-                {% elif user.is_seeker %}     
-                    <a class="navbar-brand text-dark" href="{% url 'demoapp:seeker_dash' %}">DashBoard</a>                    
-                {% endif %}  
-                <a class="navbar-brand text-dark" href="{% url 'demoapp:logout' %}">Logout</a>                               
-            {% else %}
-                <a class="navbar-brand text-dark" href="{% url 'demoapp:login' %}">Login</a>                 
-            {% endif %}
-            <form action="{% url 'demoapp:search' %}" method="GET">
-                <img src="https://cdn2.iconfinder.com/data/icons/apple-inspire-white/100/Apple-30-512.png" height="24" width="24">
-                <input class="text" type="text" name="job_request" placeholder="search">
-                <input class="btn btn-dark btn-sm" type="submit" value="Search">
-            </form>    
-        </div>
-    </nav>
 
+<body>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert {{ message.tags }} m-2" id="msg" roles="alert" >
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
+  <style>
+    .form-control{
+      background: url("http://kodyrabatowe.wp.pl/img/ico/search_gr.png") top left no-repeat;
+      border-radius: 8px;
+      border-width: 1.4px;
+      height:35px;
+      padding-left:12px;
+      border-color: aqua;
+      border-right-width: 1.4px;
+      color: white;
+    }
+
+    .btn-outline-info{   
+      margin-left: 2px;
+      margin-block-end: 6px;
+      padding-left: 10px;
+      padding-right: 10px;
+      box-sizing: border-box;    
+      border-radius: 9px;
+      height: 35px;
+      border-width: 1.4px;
+      border-left-width: 0px;
+      border-color: aqua;
+      color: rgba(255, 255, 255, 0.856);
+    }
+
+    .btn-outline-info:hover {
+      border: none;
+      height: 35px;
+      border-width: 1.4px;
+      background-image: linear-gradient(to left, rgba(248, 244, 244, 0), rgb(126, 231, 217));
+    }
+
+    .dp{
+      margin-left:40px;
+      margin-right: -50px; 
+    }
+
+    #dpimg{
+      position: absolute;
+      margin: -6px;
+    }
+    #steps{
+      font-weight: lighter;
+      letter-spacing: 3px;
+      border-bottom: 1px solid black;
+    }
+    #desc{
+      margin: 10px;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;      
+      font-weight: 100;
+      line-break: strict;
+      line-height: 2px;
+    }
+    #apply{
+      border-radius: 8px;      
+    }    
     
-    <div class="container jumbotron">        
-        {% block content %}
-                <center>        
-                    <h3><b>Latest  Posts</b></h3>  <hr>                    
-                        <table class="shadow-lg " border="1">
-                            <tr class="table-active">
-                                <th>company</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Published Date</th>
-                                <th>vaccant post</th>
-                                <th>no. of Vaccancy</th>    
-                                <th>Location</th>  
-                                {% if user.is_authenticated %}     
-                                    {% if user.is_seeker %}
-                                        <th>Apply</th>
-                                    {% endif %}   
-                                {% endif %}                                    
-                            </tr>
-                                {% for data in posts %}  
-                            <tr>
-                                <td>{{ data.company.cname }}</td>
-                                <td>{{ data.title }}</td>
-                                <td>{{ data.description }}</td> 
-                                <td>{{ data.published_date }}</td>
-                                <td>{{ data.vaccant_for }}</td>
-                                <td class="text-center">{{ data.no_of_vaccancy }}</td>  
-                                <td>{{ data.company.clocation }}</td>
-                                {% if user.is_authenticated %}     
-                                    {% if user.is_seeker %}
-                                        <td><a class="btn btn-outline-dark btn-sm" href="{% url 'demoapp:application_create' post_id=data.id company_id=data.company.id %}">Apply</a></td>
-                                    {% endif %}   
-                                {% endif %}                                                      
-                            </tr>
-                                {% endfor %}
-                        </table>
-                </center>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'demoapp:all_posts' %}">more</a>
-                {% else %}
-                    <a href="{% url 'demoapp:login' %}">more</a>
-                {% endif %}
-        {% endblock %}
+  </style>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top header-transparent">
+    <div class="container">
+      <div class="logo float-left">
+        <h1 class="text-light"><a href="{% url 'demoapp:base' %}"><span>WORK OVERFLOW</span></a></h1>
+      </div>
+
+      <!-- nav bar -->  
+      <nav class="nav-menu float-right d-none d-lg-block">
+        <ul>
+          <li class="active"><a href="{% url 'demoapp:base' %}">Home</a></li>
+          <li class="drop-down"><a href="#">Register</a>
+                <ul>
+                  <li><a href="{% url 'demoapp:company_register' %}"><b>a company</b></a></li>
+                  <li><a href="{% url 'demoapp:seeker_register' %}"><b>job seeker</b></a></li>
+                </ul>
+          </li>
+          {% if user.is_authenticated %}
+            {% if user.is_company %}
+                <li><a href="{% url 'demoapp:company_dash' %}">DashBoard</a></li>
+            {% elif user.is_seeker %}
+                <li><a href="{% url 'demoapp:seeker_dash' %}">DashBoard</a></li>
+            {% endif %}
+            <li><a href="{% url 'demoapp:logout' %}">Logout</a></li>
+          {% else %}
+            <li><a href="{% url 'demoapp:login' %}">Login</a></li>
+          {% endif %}
+
+          <li>
+            <form action="{% url 'demoapp:search' %}" method="GET">
+                <div class="input-group mb-3">                
+                    <input type="search" class="form-control" id="sb" name="job_request" placeholder="company/job/location" aria-describedby="basic-addon2">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-info" type="submit"><i class="fas fa-search"></i></button>
+                      </div>            
+                </div>
+            </form>
+          </li>
+          
+          {% if user.is_authenticated %}            
+            <li><a href="{% url 'demoapp:profile_view' %}" class="dp"><img class="rounded-circle" src="https://unoreads.com/user_profile_pic/demo-user.png" id="dpimg" height="30" width="30" alt="logo"></a></li>            
+          {% endif %}
+        </ul>
+      </nav>
+      <!--  nav-menu  -->
+
     </div>
+  </header>
+  <!-- End Header -->  
+
+  {% block content %} 
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="d-flex justify-cntent-center align-items-center">
+    <div id="heroCarousel" class="container carousel carousel-fade" data-ride="carousel">
+
+      <!-- Slide 1 -->
+      <div class="carousel-item active">        
+        <div class="carousel-container">   
+          <!--  django msg  -->
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert {{ message.tags }} m-2" id="msg" roles="alert" style="text-align: center;">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+          <!-- msg end -->
+            <h2 class="animate__animated animate__fadeInDown">W<i>e</i>lcom<i>e</i></h2>                
+            <p class="animate__animated animate__fadeInUp">" Opportunity to post for jobs and find suitable candidates for your vacancies .<br> Yes , the exact platform for job applicants to get their preferred jobs and search among various job categories and wide range of recognized companies around the globe . "</p>
+            <a href="#how" class="btn-get-started animate__animated animate__fadeInUp">Let's Start</a>    
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Hero -->
+
+  <main id="main">    
+    <!-- ======= All Post ======= -->   
+    <section class="services">    
+      <div class="section-title">
+        <h2> Latest Posts </h2>
+      </div>  
+      <div class="container" id="post">       
+        <div class="row">        
+          {% for post in posts %}
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="fade-up">            
+            <div class="icon-box icon-box-pink">
+                
+              {% if post.company.logo %}
+                <div class="icon-box-pink"><a href="{% url 'demoapp:profile_view' %}"><img class="rounded-circle" src="{{ post.company.logo.url }}" alt="logo" height="64" width="64"></a></div>  <!-- dp -->
+              {% else %}
+                <div class="icon-box-pink"><a href="{% url 'demoapp:profile_view' %}"><img class="rounded-circle" src="{% static 'assets\img\company-demo.png' %}" alt="logo" height="64" width="64"></a></div>
+              {% endif %}
+                <span><h4 class="text"><a href="{% url 'demoapp:company_detail' post.company.id %}">{{ post.company.cname }}</a></h4></span>
+                
+                <h6 class="">{{ post.title }}</h6> 
+                <span><i class="fas fa-users"></i> {{ post.no_of_vacancy }} </span> <br>
+                <span><i class="fas fa-map-marker-alt"></i> {{ post.company.clocation }} </span> <br>   <br>
+                <i class="fas fa-briefcase"></i> <i id="desc"> {{ post.description }}</i>
+                
+                {% if user.is_authenticated %}     
+                  {% if user.is_seeker %}
+                    <a class="btn btn-sm btn-outline-primary" id="apply" href="{% url 'demoapp:application_create' post_id=post.id company_id=post.company.id %}"> apply </a>
+                  {% endif %}   
+                {% endif %}     
+            </div>                 
+          </div>  
+                 
+          {% endfor %}    
+
+          <!--   more   -->  
+            {% if user.is_authenticated %}               
+              <a href="{% url 'demoapp:all_posts' %}">more ...</a>                                             
+            {% endif %}
+          <!-- END more -->
+        </div>
+      </div>     
+    </section>   
+    <!-- ==== POST END ==== -->      
+
+    <!--  total user  -->
+    <section class="why-us section-bg" data-aos="fade-up" date-aos-delay="200">
+      <div class="container">
+
+        <div class="row">
+          <div class="col-lg-6 video-box">
+            <img src="{% static 'assets/img/why-us.jpg' %}" class="img-fluid" alt="">            
+          </div>
+
+          <div class="col-lg-6 d-flex flex-column justify-content-center p-5">
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-fingerprint"></i></div>
+              <h4 class="title" style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: large;">Active  Recruiters</h4> <hr>
+              <p class="description" style = "font-size: small;"><b> {{ total_company }}  + Companies </b></p>
+            </div>
+            <div class="icon-box">
+              <div class="icon"><i class="bx bx-gift"></i></div>
+              <h4 class="title" style="font-family: Verdana, Geneva, Tahoma, sans-serif; font-size: large;">Active  Job Applicants</h4> <hr>
+              <p class="description" style = "font-size: small;"><b> {{ total_seeker }}  + job seekers </b></p>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </section>
+    <!--  END total user  -->
+
+    <!-- ======= How it work ======= -->
+    <section class="features" id="how">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>How it Works</h2>
+          <p> <b> <i>(  Work-Overflow makes it very simple to get your job done here  ) </i> </b> </p>
+        </div> 
+
+        <div class="row" data-aos="fade-up">
+          <div class="col-md-5">
+            <img src="{%  static 'assets/img/features-1.svg' %}" class="img-fluid" alt="">
+          </div>          
+          <div class="col-md-7 pt-4">
+            <h5><i id="steps">  Steps  - </i></h5>
+            <ul> <br> 
+              <li><i class="icofont-check"></i><b> Recruiters :  </b> _  Register <i class="fas fa-arrow-right sm"></i> Login <i class="fas fa-arrow-right"></i> DashBoard <i class="fas fa-arrow-right"></i> Post </li> <hr>
+              <li><i class="icofont-check"></i><b> Applicants :  </b> _  Register <i class="fas fa-arrow-right sm"></i> Login <i class="fas fa-arrow-right"></i> DashBoard <i class="fas fa-arrow-right"></i> Apply </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End How -->
+  </main>
+  <!-- End #main -->
+  {% endblock content %}
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" data-aos="fade-up" data-aos-easing="ease-in-out" data-aos-duration="500">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h4>Contact Us</h4>
+            <p>
+              Bhubaneswar Central <br>
+              751014 , 
+              Odisha<br>
+              India <br> <br>
+              <strong>Phone:</strong> +91 xxxxxxxxxx<br>
+              <strong>Email:</strong> dashbabu@gmail.com<br>
+            </p>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-info">
+            <h3>About Us</h3>
+            <p>We are trying to provide you a <br>
+                better and powerful Work-Your-Own platform <br>
+                where you can get your job done <br>     
+                at just One-Click .</p>
+            <div class="social-links mt-3">
+              <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+              <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+              <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+              <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>   
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span> work - overFlow </span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">        
+        Designed by <a href="https://instagram.com/dashgirija_edge"><i> " <u>dash babu</u> " </i> </a> with L O V E
+      </div>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a> <!-- up btn -->
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/venobox/venobox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/waypoints/jquery.waypoints.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/counterup/counterup.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+  <script src="https://kit.fontawesome.com/834d2663f4.js" crossorigin="anonymous"></script>
+  <script>
+    var message_ele = document.getElementById("msg");
+    setTimeout(function(){ 
+      message_ele.style.display = "none"; 
+    }, 6000);
+  </script>  
+
 </body>
-</html> 
+
+</html>

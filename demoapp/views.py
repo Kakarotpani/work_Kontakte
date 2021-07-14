@@ -12,18 +12,27 @@ from demosite import settings
 from django.contrib import messages
 from django.db.models import Q
 from itertools import chain
+from operator import attrgetter
 
 
 # Create your views here.
 
 
 def base(request):
-    posts = Post.objects.filter(company__is_verified='True').order_by('-published_date')[:4]
-    return render(request, 'base.html', {'posts': posts})
+    posts = Post.objects.filter(company__is_verified='True').order_by('-published_date')[:4] 
+    company= Company.objects.all()
+    total_company = company.count()
+    seeker = Seeker.objects.all()
+    total_seeker = seeker.count()
+    return render(request, 'base.html', {'posts': posts, 'total_company': total_company,'total_seeker': total_seeker})
 
 def all_posts(request):
-    posts = Post.objects.filter(company__is_verified='True').order_by('-published_date')
-    return render(request, 'base.html', {'posts': posts})
+    posts = Post.objects.filter(company__is_verified='True').order_by('-published_date')[:8]
+    company= Company.objects.all()
+    total_company = company.count()
+    seeker = Seeker.objects.all()
+    total_seeker = seeker.count()
+    return render(request, 'base.html', {'posts': posts, 'total_company': total_company,'total_seeker': total_seeker})
 
 def login_method(request):
     if request.method == 'POST':
@@ -65,13 +74,10 @@ def company_register(request):
     registered = False
     if request.method == 'POST':
         user_form = User_Form(request.POST)
-        profile_form = Company_Form(request.POST)       
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
+        profile_form = Company_Form(request.POST, request.FILES)        
+        if user_form.is_valid() and profile_form.is_valid():            
+            user = user_form.save()             
             user.set_password(user.password)
-            # Company Permisssions
-            group = Group.objects.get(name="company")
-            user.groups.add(group)
             user.is_company = True
             user.save()
             # Additional fields
@@ -101,9 +107,6 @@ def seeker_register(request):
         if user_form.is_valid() and profile_form.is_valid():             
             user = user_form.save()
             user.set_password(user.password)
-            # Seeker Permissions
-            group = Group.objects.get(name="seeker")
-            user.groups.add(group)
             user.is_seeker = True
             user.save()
             # Additional fields
@@ -160,7 +163,7 @@ def profile_update(request):
         company_profile = Company_Form(instance = company)
         a_company = True
         if request.method == "POST":
-            data = Company_Form(data = request.POST, instance = company)
+            data = Company_Form(request.POST, request.FILES, instance = company)
             if data.is_valid():
                 data.save(commit = True)
                 messages.success(request, "* Profile Updated successfully .....")
@@ -192,6 +195,7 @@ def profile_update(request):
             'a_seeker': a_seeker
         }
         return render(request, 'profile_update.html', context = context)
+        
     else:
         messages.error(request, "you are not Authenticated !!")
         return HttpResponseRedirect('/')
@@ -303,7 +307,7 @@ def cv_read_all(request):
         if request.user.is_seeker:
             seeker = Seeker.objects.get(user=request.user)
             cv = CV.objects.filter(seeker=seeker).order_by('-upload_date')
-            return render(request, 'CV_view_all.html', {'cv': cv, 'seeker': seeker})
+            return render(request, 'cv_view_all.html', {'cv': cv, 'seeker': seeker})
         else:
             messages.error(request,"U r not authenticated !!")
             return HttpResponseRedirect('/')
@@ -355,36 +359,30 @@ def cv_delete(request, id):
         messages.success(request,"* Successfully deleted your CV !!")
         return HttpResponseRedirect('/cv/read/all')
 
-
 def search(request):
     if request.method == 'GET':
-        job_request = request.GET['job_request']
-        if len(job_request) > 40:
-            messages.warning(request, "* Please search within 40 words")
-            return HttpResponseRedirect('/search')
+        search_request = request.GET['job_request']
+
+        post = Post.objects.filter(Q(vacant_for__icontains = search_request))
+        company = Company.objects.filter(Q(cname__icontains = search_request) | 
+            Q(ctype__icontains = search_request) | 
+            Q(clocation__icontains = search_request) |
+            Q(ceo__icontains = search_request))
+
+        results = list(chain(post, company))   
+        result = set(results)
+            
+        if len(result) == 0:
+            messages.info(request, "* No matching results Found !!")
+            return HttpResponseRedirect('/')
         else:
-            if Post.objects.filter(vaccant_for__icontains=job_request):
-                post_request = Post.objects.filter(vaccant_for__icontains=job_request)
-                return render(request, 'search.html', {'post_request': post_request})
-            elif Company.objects.filter(cname__icontains=job_request) or\
-                    Company.objects.filter(clocation__icontains=job_request) or\
-                    Company.objects.filter(ctype__icontains=job_request):
-                company = Company.objects.filter(cname__icontains=job_request) or Company.objects.filter(
-                    clocation__icontains=job_request) or Company.objects.filter(ctype__icontains=job_request)
-                for data in company:
-                    post_request = Post.objects.filter(company=data)
-                    post_count = post_request.count()
-                    if post_count != 0:
-                        return render(request, 'search.html', {'post_request': post_request})
-                    else:
-                        context = {
-                            'post_request': post_request, 
-                            'post_count': post_count
-                        }
-                        return render(request, 'search.html', context = context)
-            else:
-                messages.info(request,"* No Matching Results Found !!")
-                return HttpResponseRedirect('/')
+            context ={
+                'post': post,
+                'company': company,
+                'result': result,
+                'result_count' : len(result),                
+            }
+            return render(request, 'search.html', context= context)        
 
 
 #  Application
@@ -414,8 +412,11 @@ def application_create(request, post_id, company_id):
             seeker = Seeker.objects.get(user = request.user)
             post = Post.objects.get(id = post_id)
             company = Company.objects.get(id = company_id)
-            cv_applied = CV.objects.filter(seeker = seeker).latest('upload_date')
-            if Application.objects.filter(seeker = seeker, post = post).exists():            
+            try:
+                cv_applied = CV.objects.filter(seeker = seeker).latest('upload_date')
+            except:
+                cv_applied = None
+            if Application.objects.filter(seeker = seeker, post = post).exists():               
                 messages.error(request, "You have already applied for the post !!")
                 return HttpResponseRedirect('/application/view')    
             else:
@@ -464,3 +465,24 @@ def cancel_application(request, app_id):
     else:
         messages.error(request, "You are not Authenticated !!")
         return HttpResponseRedirect('/')
+
+# Detail view
+
+def company_detail(request, c_id):
+    if request.method == 'GET':
+        company = Company.objects.get(id = c_id)
+        detail = True
+        return  render(request, 'company_profile.html', {'company': company, 'detail': detail})
+
+def seeker_detail(request, s_id):
+    if request.method == 'GET':
+        seeker = Seeker.objects.get(id = s_id)
+        detail = True
+        return  render(request, 'seeker_profile.html', {'seeker': seeker, 'detail' : detail})
+
+def post_detail(request, id):
+    if request.method == 'GET':
+        company = Company.objects.get(id = id)
+        posts = Post.objects.filter(company = company)
+        return render(request, 'post_detail.html', {'posts' : posts, 'company': company})
+    
