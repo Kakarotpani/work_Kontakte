@@ -78,9 +78,6 @@ def company_register(request):
         if user_form.is_valid() and profile_form.is_valid():            
             user = user_form.save()             
             user.set_password(user.password)
-            # Company Permisssions
-            group = Group.objects.get(name="company")
-            user.groups.add(group)
             user.is_company = True
             user.save()
             # Additional fields
@@ -110,9 +107,6 @@ def seeker_register(request):
         if user_form.is_valid() and profile_form.is_valid():             
             user = user_form.save()
             user.set_password(user.password)
-            # Seeker Permissions
-            group = Group.objects.get(name="seeker")
-            user.groups.add(group)
             user.is_seeker = True
             user.save()
             # Additional fields
