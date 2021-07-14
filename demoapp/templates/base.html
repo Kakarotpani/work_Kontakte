@@ -10,7 +10,7 @@
   <meta content="" name="keywords">  
 
   <!-- Favicons -->
-  <link class="site-logo" rel="shortcut icon" href="{% static 'assets\img\web-logo-removebg-preview.png' %}">
+  <link class="site-logo" rel="shortcut icon" href="{% static 'assets/img/web-logo-removebg-preview.png' %}">
   <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
 
   <link rel=”stylesheet” href=”https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css”>
@@ -185,7 +185,7 @@
               {% if post.company.logo %}
                 <div class="icon-box-pink"><a href="{% url 'demoapp:profile_view' %}"><img class="rounded-circle" src="{{ post.company.logo.url }}" alt="logo" height="64" width="64"></a></div>  <!-- dp -->
               {% else %}
-                <div class="icon-box-pink"><a href="{% url 'demoapp:profile_view' %}"><img class="rounded-circle" src="{% static 'assets\img\company-demo.png' %}" alt="logo" height="64" width="64"></a></div>
+                <div class="icon-box-pink"><a href="{% url 'demoapp:profile_view' %}"><img class="rounded-circle" src="{% static 'assets/img/company-demo.png' %}" alt="logo" height="64" width="64"></a></div>
               {% endif %}
                 <span><h4 class="text"><a href="{% url 'demoapp:company_detail' post.company.id %}">{{ post.company.cname }}</a></h4></span>
                 
